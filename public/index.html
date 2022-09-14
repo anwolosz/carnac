@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>socketio-template</title>
-  <script src="/socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="/client.js"></script>
+  <!-- TODO: Replace CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
+
 <body>
-  
+  <h1>Carnac</h1>
+  <div id="app">
+    <p>{{createRoomName}}</p>
+    <p @click="chooseRoomName()">Choose own room name ^</p>
+    <input id="createRoomInput" type="text" v-model="createRoomName" hidden>
+    <p>Create room:</p>
+    <button :disabled="isEmptyString(createRoomName)" @click="createRoom()">Create!</button>
+    <p>Join room via room name:</p>
+    <p>{{this.joinRoomName}}</p>
+    <input type="text" v-model="joinRoomName">
+    <button @click="joinRoom()" :disabled="isEmptyString(joinRoomName)">Join!</button>
+  </div>
+
+
+  <script src="/index.js"></script>
 </body>
+
 </html>
