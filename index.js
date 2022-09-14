@@ -5,6 +5,9 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+
+const Carnac = require("./carnac");
+
 // TODO: might be nice in a separate file
 function isRoomExists(room) {
   return room in rooms;
@@ -21,29 +24,43 @@ app.get("/isExists/:room", (req, res) => {
   res.json({ exists: isRoomExists(req.params.room) })
 });
 
-app.get("/createRoom/:room", (req, res) => {
-  if (!isRoomExists(req.params.room))
-  {
-    rooms[req.params.room] = {}
-    return res.json({ exists:  false})
+app.get("/createRoom/:room", (req, res) => { //TODO: check room name rules. dont allow "/" for example.
+  if (!isRoomExists(req.params.room)) {
+    rooms[req.params.room] = new Carnac();
+    return res.json({ exists: false })
   }
-  return res.json({ exists:  true})
+  return res.json({ exists: true })
 });
 
 
 
 
 app.get("/:room", (req, res) => {
-  if (!isRoomExists(req.params.room))
-  {
+  if (!isRoomExists(req.params.room)) {
     return res.redirect("/");
   }
   console.log("hello");
-  return res.sendFile(__dirname + "/public/game.html"); //TODO: test game.html as gameId
+  return res.sendFile(__dirname + "/public/carnac.html"); //TODO: test game.html as gameId
 });
 
 io.on("connection", (socket) => {
   console.log(`Connected with id: ${socket.id}`);
+
+
+  socket.on("connectRoom", (roomName) => {
+    if (rooms[roomName].isEmpty()) //TODO: check if really exists the room
+    {
+      rooms[roomName].firstPlayer.id = socket.id
+    }
+    else if (rooms[roomName].hasFreePlayer())
+    {
+      rooms[roomName].secondPlayer.id = socket.id
+    }
+
+    socket.join(roomName);
+    console.log(rooms);
+
+  })
 
   socket.on("createRoom", (roomName) => {
     console.log("Room create: ", roomName);
@@ -54,6 +71,5 @@ io.on("connection", (socket) => {
   })
   console.log(rooms);
 });
-server.listen(3000, () => {
-  console.log("listening on: 3000");
-});
+
+server.listen(process.env.PORT || 3000);

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- TODO: Replace CDN -->
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <table>
+      <tr v-for="(row, y) in carnac.board">
+        <td v-for="(cell, x) in row">
+          a
+        </td>
+      </tr>
+    </table>
+
+
+  </div>
+
+  <script src="/carnac.js"></script>
+  <script src="/carnacConnection.js"></script>
+  
+</body>
+
+</html>
