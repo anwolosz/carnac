@@ -1,0 +1,32 @@
+#board {
+    margin: auto;
+    user-select: none;
+    border: 2px solid black;
+    border-collapse: collapse;
+    background: linear-gradient(to bottom left,
+            #c19a6c,
+            #d89d84,
+            #e7b88d,
+            #e6a98b,
+            #d0a373);
+}
+
+.cell {
+    border: 2px solid black;
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+    text-align: center;
+}
+
+.shadow {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.unplacedStone {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.placedStone {
+    background-color: black;
+}

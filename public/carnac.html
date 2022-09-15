@@ -6,17 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game</title>
+  <link rel="stylesheet" href="carnac.css">
   <script src="/socket.io/socket.io.js"></script>
-  <!-- TODO: Replace CDN -->
-  <script src="https://unpkg.com/vue@next"></script>
+  <script src="vue.global.js"></script>
 </head>
 
 <body>
 
   <div id="app">
-    <table>
+    <h1>{{carnac.roomName}}</h1>
+    <table id="board">
       <tr v-for="(row, y) in carnac.board">
-        <td v-for="(cell, x) in row">
+        <td @mouseover="mouseOverCell($event, y, x)" @click="mouseClickCell($event, y, x)" class="cell" v-for="(cell, x) in row">
           a
         </td>
       </tr>
@@ -28,6 +29,7 @@
   <script src="/carnac.js"></script>
   <script src="/carnacConnection.js"></script>
   
+  <script src="/carnacVisual.js"></script>
 </body>
 
 </html>

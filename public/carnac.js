@@ -1,4 +1,3 @@
-console.log("ehll");
 class Player {
     constructor()
     {
@@ -7,8 +6,9 @@ class Player {
 }
 
 class Carnac {
-    constructor()
+    constructor(roomName)
     {
+        this.roomName = roomName
         this.board = []
         this.boardWidth = 10;
         this.boardHeight = 7;
@@ -31,5 +31,28 @@ class Carnac {
     hasFreePlayer()
     {
         return this.firstPlayer.id === null || this.secondPlayer.id === null;
+    }
+
+    getShadows(y, x)
+    {
+        let shadows = []
+        if (x-1 >= 0 && x-2 >= 0)
+        {
+            shadows.push([y, x-1], [y, x-2])
+        }
+        if (x+1 < this.boardWidth && x+2 < this.boardWidth)
+        {
+            shadows.push([y, x+1], [y, x+2])
+        }
+        if (y-1 >= 0 && y-2 >= 0)
+        {
+            shadows.push([y-1, x], [y-2, x])
+        }
+        if (y+1 < this.boardHeight && y+2 < this.boardHeight)
+        {
+            shadows.push([y+1, x], [y+2, x])
+        }
+        console.log(shadows);
+        return shadows;
     }
 }
