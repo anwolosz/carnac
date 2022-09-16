@@ -15,14 +15,11 @@ const app = {
         {
             console.log(y, x);
         },
-        mouseOverCell(event, y, x) {
-            drawMove(this.carnac.getShadows(y, x), event, y, x);
+        mouseOverCell(y, x) {
+            this.carnac.setShadows(y, x)
         },
-        mouseClickCell(event, y, x) {
-            event.target.classList.add("placedStone")
-            event.target.classList.add("white")
-            this.carnac.board[y][x] = "X"
-            console.log(this.carnac.board);
+        mouseClickCell(y, x) {
+            this.carnac.placeStone(y, x);
         }
 
     },

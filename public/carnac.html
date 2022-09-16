@@ -17,7 +17,9 @@
     <h1>{{carnac.roomName}}</h1>
     <table id="board">
       <tr v-for="(row, y) in carnac.board">
-        <td @mouseover="mouseOverCell($event, y, x)" @click="mouseClickCell($event, y, x)" class="cell" v-for="(cell, x) in row">
+        <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell"
+          v-for="(cell, x) in row"
+          :class="carnac.board[y][x] == 'WS' || carnac.board[y][x] == 'ES' || carnac.board[y][x] == 'NS' || carnac.board[y][x] == 'SS'  ? 'shadow' : '', carnac.board[y][x] === 'S' ? 'unplacedStone' : '', carnac.board[y][x] === 'X' ? 'placedStone' : ''">
           a
         </td>
       </tr>
@@ -27,9 +29,8 @@
   </div>
 
   <script src="/carnac.js"></script>
-  <script src="/carnacVisual.js"></script>
   <script src="/carnacConnection.js"></script>
-  
+
 </body>
 
 </html>
