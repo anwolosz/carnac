@@ -26,7 +26,7 @@ app.get("/isExists/:room", (req, res) => {
 
 app.get("/createRoom/:room", (req, res) => { //TODO: check room name rules. dont allow "/" for example.
   if (!isRoomExists(req.params.room)) {
-    rooms[req.params.room] = new Carnac();
+    rooms[req.params.room] = new Carnac(req.params.room);
     return res.json({ exists: false })
   }
   return res.json({ exists: true })
@@ -51,6 +51,7 @@ io.on("connection", (socket) => {
     if (rooms[roomName].isEmpty()) //TODO: check if really exists the room
     {
       rooms[roomName].firstPlayer.id = socket.id
+      rooms[roomName].activePlayer = rooms[roomName].firstPlayer
     }
     else if (rooms[roomName].hasFreePlayer())
     {
@@ -59,16 +60,24 @@ io.on("connection", (socket) => {
 
     socket.join(roomName);
     console.log(rooms);
-
   })
 
-  socket.on("createRoom", (roomName) => {
-    console.log("Room create: ", roomName);
-    console.log("Should create room");
-    rooms[roomName] = socket.id;
-    socket.join(roomName);
-    console.log(rooms[roomName]);
-  })
+  
+  socket.on("move", (roomName, y, x) => {
+    console.log(roomName, y, x);
+    // console.log(rooms);
+    if (!(roomName in rooms)) {
+      console.log("Room not exist!");
+      socket.emit("error", "Room not exist");
+      return;
+    }
+    if (rooms[roomName].move(y, x, socket.id)) {
+      // socket
+      //   .to(roomName)
+      //   .emit("opponentMove", x, y, rooms[roomName].activePlayer);
+    }
+  });
+
   console.log(rooms);
 });
 

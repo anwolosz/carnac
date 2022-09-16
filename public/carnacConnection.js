@@ -11,15 +11,12 @@ const app = {
 
     },
     methods: {
-        mouseOver(y, x)
-        {
-            console.log(y, x);
-        },
         mouseOverCell(y, x) {
             this.carnac.setShadows(y, x)
         },
         mouseClickCell(y, x) {
             this.carnac.placeStone(y, x);
+            socket.emit("move", this.carnac.roomName, y, x)
         }
 
     },
