@@ -20,7 +20,7 @@
 }
 
 .shadow {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .unplacedStone {
@@ -28,5 +28,13 @@
 }
 
 .placedStone {
-    background-color: black;
+    background-color:black;
+}
+
+.white {
+    background: radial-gradient(white 45%,  black 50%);
+}
+
+.red {
+    background: radial-gradient(white 45%,  black 50%);
 }
