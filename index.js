@@ -48,17 +48,19 @@ io.on("connection", (socket) => {
 
 
   socket.on("connectRoom", (roomName) => {
-    if (rooms[roomName].isEmpty()) //TODO: check if really exists the room
+    socket.join(roomName); //TODO: check if really exists the room
+    if (rooms[roomName].isEmpty()) 
     {
       rooms[roomName].firstPlayer.id = socket.id
-      rooms[roomName].activePlayer = rooms[roomName].firstPlayer
+      rooms[roomName].activePlayer = socket.id
+      io.to(socket.id).emit("start", socket.id, "OPPONENT");
     }
     else if (rooms[roomName].hasFreePlayer())
     {
       rooms[roomName].secondPlayer.id = socket.id
+      io.to(socket.id).emit("start", "OPPONENT", socket.id);
     }
 
-    socket.join(roomName);
     console.log(rooms);
   })
 
@@ -72,9 +74,9 @@ io.on("connection", (socket) => {
       return;
     }
     if (rooms[roomName].move(y, x, socket.id)) {
-      // socket
-      //   .to(roomName)
-      //   .emit("opponentMove", x, y, rooms[roomName].activePlayer);
+      socket
+        .to(roomName)
+        .emit("opponentMove", y, x);
     }
   });
 
