@@ -65,7 +65,7 @@ class Carnac {
         );
     }
 
-    isOutOfBounds(x, y) {
+    isOutOfBounds(y, x) {
         return x >= this.boardWidth || y >= this.boardHeight || x < 0 || y < 0;
     }
 

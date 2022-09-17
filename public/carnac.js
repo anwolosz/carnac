@@ -23,6 +23,7 @@ class Carnac {
     }
 
     move(y, x, player) {
+        console.log("??", this.board[y][x]);
         if (this.isLegalMove(y, x, player)) {
             console.log("Move is legal!");
             console.log("Active player: ", this.activePlayer);
@@ -56,7 +57,7 @@ class Carnac {
     }
 
     isLegalMove(y, x, player) {
-        console.log("!!!!!!!!!!", player, this.activePlayer);
+        console.log("!!!!!!!!!!", this.board[y][x]);
         return (
             this.winner.id === null &&
             this.activePlayer === player &&
@@ -65,7 +66,7 @@ class Carnac {
         );
     }
 
-    isOutOfBounds(x, y) {
+    isOutOfBounds(y, x) {
         return x >= this.boardWidth || y >= this.boardHeight || x < 0 || y < 0;
     }
 

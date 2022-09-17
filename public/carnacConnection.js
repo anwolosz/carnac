@@ -24,7 +24,7 @@ const app = {
             this.carnac.setShadows(y, x);
         },
         mouseClickCell(y, x) {
-            this.carnac.placeStone(y, x);
+            // this.carnac.placeStone(y, x);
             console.log("ITTT?222?");
             if (this.carnac.move(y, x, socket.id)) {
                 console.log("ITTT??");
