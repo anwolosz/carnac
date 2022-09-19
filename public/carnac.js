@@ -33,7 +33,7 @@ class Carnac {
     }
 
 
-    isLegalTip() {
+    isLegalTip(y, x, player) {
         return (
             this.winner.id === null &&
             this.activePlayer.id === player &&
@@ -46,22 +46,24 @@ class Carnac {
     move(y, x, player) {
 
         console.log("helloASDASFASD");
-        if (this.activePlayer.status === "TIP_OR_PASS")
+        if (this.activePlayer.status === "TIP_OR_PASS") {
             if (this.isLegalTip(y, x, player)) {
+                let tipSymbol = this.board[y][x]
                 for (let y1 = 0; y1 < this.boardHeight; y1++) {
                     for (let x1 = 0; x1 < this.boardWidth; x1++) {
-                        if (this.board[y][x] === this.board[y1][x1]) {
+                        console.log(this.board[y][x]);
+                        console.log(this.board[y1][x1]);
+                        if (this.board[y1][x1] === tipSymbol) {
                             this.board[y1][x1] = "X"
                         }
                     }
                 }
 
-
-                this.activePlayer.status = "PLACE_STONE"
+                this.activePlayer.status = "PLACE_STONE";
             }
+        }
 
-        if (this.activePlayer.status === "PLACE_STONE")
-        {
+        if (this.activePlayer.status === "PLACE_STONE") {
             if (this.isLegalPlace(y, x, player)) {
                 console.log("Move is legal!");
                 console.log("Active player: ", this.activePlayer.id);
@@ -93,6 +95,7 @@ class Carnac {
         } else {
             this.activePlayer.id = this.firstPlayer.id;
         }
+        this.activePlayer.status = "TIP_OR_PASS"
     }
 
     isPassAllowed() {
