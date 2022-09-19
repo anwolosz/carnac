@@ -44,6 +44,18 @@ const app = {
             {
                 console.log("PAss");
             }
+        },
+        color(y, x)
+        {
+            if (this.carnac.board[y][x].color === 'W')
+            {
+                return "white";
+            }
+            if (this.carnac.board[y][x].color === 'R')
+            {
+                return "red";
+            }
+            return ""
         }
 
     },

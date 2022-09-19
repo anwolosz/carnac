@@ -19,6 +19,7 @@
     text-align: center;
 }
 
+
 .shadow {
     background-color: rgba(0, 0, 0, 0.3);
 }
@@ -32,9 +33,9 @@
 }
 
 .white {
-    background: white;
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 48%, rgba(51,110,122,0) 49%, rgba(0,212,255,0) 100%);
 }
 
 .red {
-    background: red;
+    background: radial-gradient(circle, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 48%, rgba(51,110,122,0) 49%, rgba(0,212,255,0) 100%);
 }
