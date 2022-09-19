@@ -141,20 +141,11 @@ class Carnac {
     }
 
 
-    removeShadows() {
-        for (let y = 0; y < this.boardHeight; y++) {
-            for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x] === "WS" || this.board[y][x] === "ES" || this.board[y][x] === "NS" || this.board[y][x] === "SS" || this.board[y][x] === "S") {
-                    this.board[y][x] = null;
-                }
-            }
-        }
-    }
 
     removeOptions() {
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x] === "WW" || this.board[y][x] === "EW" || this.board[y][x] === "NW" || this.board[y][x] === "Sw" ||
+                if (this.board[y][x] === "WW" || this.board[y][x] === "EW" || this.board[y][x] === "NW" || this.board[y][x] === "SW" ||
                     this.board[y][x] === "WR" || this.board[y][x] === "ER" || this.board[y][x] === "NR" || this.board[y][x] === "SR" || this.board[y][x] === "S") {
                     this.board[y][x] = null;
                 }
@@ -162,40 +153,10 @@ class Carnac {
         }
     }
 
-    setShadows(y, x) {
-
-        this.removeShadows()
-
-        if (this.board[y][x] === "X") {
-            return
-        }
-
-
-        this.board[y][x] = "S"
-
-        if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1] != "X" && this.board[y][x - 2] != "X") {
-            this.board[y][x - 1] = "WS"
-            this.board[y][x - 2] = "WS"
-
-        }
-        if (x + 1 < this.boardWidth && x + 2 < this.boardWidth && this.board[y][x + 1] != "X" && this.board[y][x + 2] != "X") {
-            this.board[y][x + 1] = "ES"
-            this.board[y][x + 2] = "ES"
-
-        }
-        if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x] != "X" && this.board[y - 2][x] != "X") {
-            this.board[y - 1][x] = "NS"
-            this.board[y - 2][x] = "NS"
-
-        }
-        if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x] != "X" && this.board[y + 2][x] != "X") {
-            this.board[y + 1][x] = "SS"
-            this.board[y + 2][x] = "SS"
-
-        }
-    }
 
     placeStone(y, x, stone) {
+
+        this.removeOptions()
 
         let horizontalSymbol = "R";
         let verticalSymbol = "W";
@@ -204,7 +165,10 @@ class Carnac {
             verticalSymbol = "R";
         }
 
-        this.board[y][x] = "S";
+        if (this.board[y][x] !== "X")
+        {
+            this.board[y][x] = "S";
+        }
 
         if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1] != "X" && this.board[y][x - 2] != "X") {
             this.board[y][x - 1] = "W" + horizontalSymbol
