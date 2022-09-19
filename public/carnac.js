@@ -60,6 +60,13 @@ class Carnac {
                 }
                 this.removeOptions();
                 this.activePlayer.status = "PLACE_STONE";
+                return true;
+            }
+            else {
+                console.log(player);
+                console.log(this.activePlayer.id);
+                console.log("Move is illlegal...");
+                return false;
             }
         }
 
@@ -148,7 +155,7 @@ class Carnac {
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
                 if (this.board[y][x] === "WW" || this.board[y][x] === "EW" || this.board[y][x] === "NW" || this.board[y][x] === "Sw" ||
-                    this.board[y][x] === "WR" || this.board[y][x] === "ER" || this.board[y][x] === "NR" || this.board[y][x] === "SR" || this.board[y][x] === "S" ) {
+                    this.board[y][x] === "WR" || this.board[y][x] === "ER" || this.board[y][x] === "NR" || this.board[y][x] === "SR" || this.board[y][x] === "S") {
                     this.board[y][x] = null;
                 }
             }

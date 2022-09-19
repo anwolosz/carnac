@@ -19,7 +19,10 @@
       <tr v-for="(row, y) in carnac.board">
         <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
           :class="
-          carnac.board[y][x] == 'WS' || carnac.board[y][x] == 'ES' || carnac.board[y][x] == 'NS' || carnac.board[y][x] == 'SS'  ? 'shadow' : '', carnac.board[y][x] === 'S' ? 'unplacedStone' : '', carnac.board[y][x] === 'X' ? 'placedStone' : '', carnac.board[y][x] === 'WW' || carnac.board[y][x] === 'EW' || carnac.board[y][x] === 'NW' || carnac.board[y][x] === 'SW' ? 'white' : '',  carnac.board[y][x] === 'WR' || carnac.board[y][x] === 'ER' || carnac.board[y][x] === 'NR' || carnac.board[y][x] === 'SR' ? 'red' : ''"
+          carnac.board[y][x] == 'WS' || carnac.board[y][x] == 'ES' || carnac.board[y][x] == 'NS' || carnac.board[y][x] == 'SS'  ? 'shadow' : '',
+          carnac.board[y][x] === 'S' ? 'unplacedStone' : '', carnac.board[y][x] === 'X' ? 'placedStone' : '',
+          carnac.board[y][x] === 'WW' || carnac.board[y][x] === 'EW' || carnac.board[y][x] === 'NW' || carnac.board[y][x] === 'SW' ? 'white' : '', 
+          carnac.board[y][x] === 'WR' || carnac.board[y][x] === 'ER' || carnac.board[y][x] === 'NR' || carnac.board[y][x] === 'SR' ? 'red' : ''"
           >
           a
         </td>
