@@ -12,7 +12,8 @@ const app = {
             console.log("Hello kezdünk");
             this.carnac.firstPlayer.id = firstPlayerId
             this.carnac.secondPlayer.id = secondPlayerId
-            this.carnac.activePlayer = firstPlayerId;
+            this.carnac.activePlayer.id = firstPlayerId;
+            this.carnac.activePlayer.status = "PLACE_STONE"
         });
         socket.on("opponentMove", (y, x) => {
             this.carnac.move(y, x, "OPPONENT");
@@ -21,7 +22,12 @@ const app = {
     },
     methods: {
         mouseOverCell(y, x) {
-            this.carnac.setShadows(y, x);
+            //TODO: check game end
+            if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE")
+            {
+                this.carnac.setShadows(y, x);
+            }
+
         },
         mouseClickCell(y, x) {
             // this.carnac.placeStone(y, x);
@@ -31,6 +37,13 @@ const app = {
                 socket.emit("move", this.carnac.roomName, y, x)
             }
 
+        },
+        mouseClickPass()
+        {
+            if (this.carnac.isPassAllowed())
+            {
+                console.log("PAss");
+            }
         }
 
     },

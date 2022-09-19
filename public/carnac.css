@@ -32,9 +32,9 @@
 }
 
 .white {
-    background: radial-gradient(white 45%,  black 50%);
+    background: white;
 }
 
 .red {
-    background: radial-gradient(white 45%,  black 50%);
+    background: red;
 }

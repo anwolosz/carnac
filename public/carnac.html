@@ -17,13 +17,15 @@
     <h1>{{carnac.roomName}}</h1>
     <table id="board">
       <tr v-for="(row, y) in carnac.board">
-        <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell"
-          v-for="(cell, x) in row"
-          :class="carnac.board[y][x] == 'WS' || carnac.board[y][x] == 'ES' || carnac.board[y][x] == 'NS' || carnac.board[y][x] == 'SS'  ? 'shadow' : '', carnac.board[y][x] === 'S' ? 'unplacedStone' : '', carnac.board[y][x] === 'X' ? 'placedStone' : ''">
+        <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
+          :class="
+          carnac.board[y][x] == 'WS' || carnac.board[y][x] == 'ES' || carnac.board[y][x] == 'NS' || carnac.board[y][x] == 'SS'  ? 'shadow' : '', carnac.board[y][x] === 'S' ? 'unplacedStone' : '', carnac.board[y][x] === 'X' ? 'placedStone' : '', carnac.board[y][x] === 'W' ? 'white' : '', carnac.board[y][x] === 'R' ? 'red' : ''"
+          >
           a
         </td>
       </tr>
     </table>
+    <button @click="mouseClickPass()">PASS</button>
 
 
   </div>

@@ -52,7 +52,8 @@ io.on("connection", (socket) => {
     if (rooms[roomName].isEmpty()) 
     {
       rooms[roomName].firstPlayer.id = socket.id
-      rooms[roomName].activePlayer = socket.id
+      rooms[roomName].activePlayer.id = socket.id
+      rooms[roomName].activePlayer.status = "PLACE_STONE"
       io.to(socket.id).emit("start", socket.id, "OPPONENT");
     }
     else if (rooms[roomName].hasFreePlayer())
