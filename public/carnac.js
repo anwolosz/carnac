@@ -7,9 +7,9 @@ class Player {
 
 class Cell {
     constructor() {
-        this.stone = null
-        this.unplacedStone = null
-        this.shadow = null
+        this.color = null // W / R
+        this.type = null // FIXED / PLACED / SHADOW
+        this.direction = null // W / E / N / S
 
     }
 }
@@ -27,7 +27,7 @@ class Carnac {
         for (let y = 0; y < this.boardHeight; y++) {
             this.board.push([]);
             for (let x = 0; x < this.boardWidth; x++) {
-                this.board[y].push(null);
+                this.board[y].push(new Cell());
             }
         }
     }
@@ -38,8 +38,7 @@ class Carnac {
             this.winner.id === null &&
             this.activePlayer.id === player &&
             !this.isOutOfBounds(y, x) &&
-            (this.board[y][x] === "WW" || this.board[y][x] === "WR" || this.board[y][x] === "EW" || this.board[y][x] === "ER" ||
-                this.board[y][x] === "NW" || this.board[y][x] === "NR" || this.board[y][x] === "SW" || this.board[y][x] === "SR")
+            (this.board[y][x].type === "SHADOW")
         );
     }
 
@@ -48,13 +47,13 @@ class Carnac {
         console.log("helloASDASFASD");
         if (this.activePlayer.status === "TIP_OR_PASS") {
             if (this.isLegalTip(y, x, player)) {
-                let tipSymbol = this.board[y][x]
+                let tipSymbol = this.board[y][x].direction
                 for (let y1 = 0; y1 < this.boardHeight; y1++) {
                     for (let x1 = 0; x1 < this.boardWidth; x1++) {
                         console.log(this.board[y][x]);
                         console.log(this.board[y1][x1]);
-                        if (this.board[y1][x1] === tipSymbol) {
-                            this.board[y1][x1] = "X"
+                        if (this.board[y1][x1].direction === tipSymbol) {
+                            this.board[y1][x1].type = "FIXED"
                         }
                     }
                 }
@@ -109,8 +108,7 @@ class Carnac {
         // If there is no cell with shadow
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x] === "WW" || this.board[y][x] === "WR" || this.board[y][x] === "EW" || this.board[y][x] === "ER" ||
-                    this.board[y][x] === "NW" || this.board[y][x] === "NR" || this.board[y][x] === "SW" || this.board[y][x] === "SR") {
+                if (this.board[y][x].type === "SHADOW") {
                     return true;
                 }
             }
@@ -123,7 +121,7 @@ class Carnac {
             this.winner.id === null &&
             this.activePlayer.id === player &&
             !this.isOutOfBounds(y, x) &&
-            this.board[y][x] !== "X"
+            this.board[y][x].type !== "FIXED"
         );
     }
 
@@ -145,9 +143,8 @@ class Carnac {
     removeOptions() {
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x] === "WW" || this.board[y][x] === "EW" || this.board[y][x] === "NW" || this.board[y][x] === "SW" ||
-                    this.board[y][x] === "WR" || this.board[y][x] === "ER" || this.board[y][x] === "NR" || this.board[y][x] === "SR" || this.board[y][x] === "S") {
-                    this.board[y][x] = null;
+                if (this.board[y][x].type === "SHADOW" || this.board[y][x].type === "PLACED") {
+                    this.board[y][x] = new Cell();
                 }
             }
         }
@@ -156,7 +153,13 @@ class Carnac {
 
     placeStone(y, x, stone) {
 
+
+        
         this.removeOptions()
+        
+        if (this.board[y][x].type === "FIXED") {
+            return
+        }
 
         let horizontalSymbol = "R";
         let verticalSymbol = "W";
@@ -165,29 +168,49 @@ class Carnac {
             verticalSymbol = "R";
         }
 
-        if (this.board[y][x] !== "X")
+        if (this.board[y][x].type !== "FIXED")
         {
-            this.board[y][x] = "S";
+            this.board[y][x].type = "PLACED";
         }
 
-        if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1] != "X" && this.board[y][x - 2] != "X") {
-            this.board[y][x - 1] = "W" + horizontalSymbol
-            this.board[y][x - 2] = "W" + horizontalSymbol
+        if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1].type != "FIXED" && this.board[y][x - 2].type != "FIXED") {
+            this.board[y][x - 1].color = horizontalSymbol
+            this.board[y][x - 1].direction = "W"
+            this.board[y][x - 1].type = "SHADOW"
+
+            this.board[y][x - 2].color = horizontalSymbol
+            this.board[y][x - 2].direction = "W"
+            this.board[y][x - 2].type = "SHADOW"
 
         }
-        if (x + 1 < this.boardWidth && x + 2 < this.boardWidth && this.board[y][x + 1] != "X" && this.board[y][x + 2] != "X") {
-            this.board[y][x + 1] = "E" + horizontalSymbol
-            this.board[y][x + 2] = "E" + horizontalSymbol
+        if (x + 1 < this.boardWidth && x + 2 < this.boardWidth && this.board[y][x + 1].type != "FIXED" && this.board[y][x + 2].type != "FIXED") {
+            this.board[y][x + 1].color = horizontalSymbol
+            this.board[y][x + 1].direction = "E"
+            this.board[y][x + 1].type = "SHADOW"
+
+            this.board[y][x + 2].color = horizontalSymbol
+            this.board[y][x + 2].direction = "E"
+            this.board[y][x + 2].type = "SHADOW"
 
         }
-        if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x] != "X" && this.board[y - 2][x] != "X") {
-            this.board[y - 1][x] = "N" + verticalSymbol
-            this.board[y - 2][x] = "N" + verticalSymbol
+        if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x].type != "FIXED" && this.board[y - 2][x].type != "FIXED") {
+            this.board[y-1][x].color = verticalSymbol
+            this.board[y-1][x].direction = "N"
+            this.board[y-1][x].type = "SHADOW"
+
+            this.board[y-2][x].color = verticalSymbol
+            this.board[y-2][x].direction = "N"
+            this.board[y-2][x].type = "SHADOW"
 
         }
-        if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x] != "X" && this.board[y + 2][x] != "X") {
-            this.board[y + 1][x] = "S" + verticalSymbol
-            this.board[y + 2][x] = "S" + verticalSymbol
+        if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x].type != "FIXED" && this.board[y + 2][x].type != "FIXED") {
+            this.board[y+1][x].color = verticalSymbol
+            this.board[y+1][x].direction = "S"
+            this.board[y+1][x].type = "SHADOW"
+
+            this.board[y+2][x].color = verticalSymbol
+            this.board[y+2][x].direction = "S"
+            this.board[y+2][x].type = "SHADOW"
 
         }
     }
