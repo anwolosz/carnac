@@ -58,7 +58,7 @@ class Carnac {
                         }
                     }
                 }
-
+                this.removeOptions();
                 this.activePlayer.status = "PLACE_STONE";
             }
         }
@@ -144,6 +144,17 @@ class Carnac {
         }
     }
 
+    removeOptions() {
+        for (let y = 0; y < this.boardHeight; y++) {
+            for (let x = 0; x < this.boardWidth; x++) {
+                if (this.board[y][x] === "WW" || this.board[y][x] === "EW" || this.board[y][x] === "NW" || this.board[y][x] === "Sw" ||
+                    this.board[y][x] === "WR" || this.board[y][x] === "ER" || this.board[y][x] === "NR" || this.board[y][x] === "SR" || this.board[y][x] === "S" ) {
+                    this.board[y][x] = null;
+                }
+            }
+        }
+    }
+
     setShadows(y, x) {
 
         this.removeShadows()
@@ -186,7 +197,7 @@ class Carnac {
             verticalSymbol = "R";
         }
 
-        this.board[y][x] = "X";
+        this.board[y][x] = "S";
 
         if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1] != "X" && this.board[y][x - 2] != "X") {
             this.board[y][x - 1] = "W" + horizontalSymbol
