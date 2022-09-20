@@ -42,6 +42,35 @@ class Carnac {
         );
     }
 
+    pass(player)
+    {
+        console.log(this.activePlayer.status);
+        if (this.activePlayer.status === "TIP_OR_PASS")
+        {
+            console.log("itetete");
+            console.log(this.activePlayer.id, player);
+            if (this.isLegalPass(player))
+            {
+                console.log("TEST");
+                for (let y = 0; y < this.boardHeight; y++) {
+                    for (let x = 0; x < this.boardWidth; x++) {
+                        if (this.board[y][x].type === "PLACED") {
+                            this.board[y][x].type = "FIXED";
+                            break;
+                        }
+                    }
+                }
+                this.removeOptions();
+                this.switchPlayer();
+                this.activePlayer.status = "PLACE_STONE";
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
     move(y, x, stone, player) {
 
         console.log("helloASDASFASD");
@@ -105,17 +134,25 @@ class Carnac {
         this.activePlayer.status = "TIP_OR_PASS"
     }
 
-    isPassAllowed() {
-        // If there is no cell with shadow
-        for (let y = 0; y < this.boardHeight; y++) {
-            for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x].type === "SHADOW") {
-                    return true;
-                }
-            }
-        }
-        return false;
+    isLegalPass(player)
+    {
+        return (
+        this.winner.id === null &&
+        this.activePlayer.id === player
+        )
     }
+
+    // isPassAllowed() {
+    //     // If there is no cell with shadow
+    //     for (let y = 0; y < this.boardHeight; y++) {
+    //         for (let x = 0; x < this.boardWidth; x++) {
+    //             if (this.board[y][x].type === "SHADOW") {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
 
     isLegalPlace(y, x, player) {
         return (

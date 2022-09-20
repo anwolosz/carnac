@@ -81,6 +81,21 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("pass", (roomName) => {
+    console.log(roomName);
+    console.log("PASSS");
+    if (!(roomName in rooms)) {
+      console.log("Room not exist!");
+      socket.emit("error", "Room not exist");
+      return;
+    }
+    if (rooms[roomName].pass(socket.id)) {
+      socket
+        .to(roomName)
+        .emit("opponentPass");
+    }
+  });
+
   console.log(rooms);
 });
 

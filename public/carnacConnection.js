@@ -21,6 +21,11 @@ const app = {
             this.carnac.selectedStone = selection
         });
 
+        socket.on("opponentPass", (y, x, stone) => {
+            console.log("testpass");
+            this.carnac.pass("OPPONENT");
+        });
+
     },
     methods: {
         mouseOverCell(y, x) {
@@ -42,8 +47,9 @@ const app = {
         },
         mouseClickPass()
         {
-            if (this.carnac.isPassAllowed())
+            if (this.carnac.pass(socket.id))
             {
+                socket.emit("pass", this.carnac.roomName)
                 console.log("PAss");
             }
         },
