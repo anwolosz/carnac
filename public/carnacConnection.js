@@ -25,7 +25,7 @@ const app = {
             //TODO: check game end
             if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE")
             {
-                this.carnac.placeStone(y, x);
+                this.carnac.placeStone(y, x, "ST1");
             }
 
         },
