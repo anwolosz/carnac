@@ -56,6 +56,10 @@ const app = {
                 return "red";
             }
             return ""
+        },
+        selectStone(stone)
+        {
+            this.carnac.selectedStone = stone;
         }
 
     },

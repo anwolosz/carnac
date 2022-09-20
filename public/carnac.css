@@ -1,4 +1,4 @@
-#board {
+.board {
     margin: auto;
     user-select: none;
     border: 2px solid black;
@@ -9,6 +9,22 @@
             #e7b88d,
             #e6a98b,
             #d0a373);
+}
+
+.option {
+    user-select: none;
+    border: 2px solid black;
+    border-collapse: collapse;
+    background: linear-gradient(to bottom left,
+            #c19a6c,
+            #d89d84,
+            #e7b88d,
+            #e6a98b,
+            #d0a373);
+}
+
+.selected {
+    border: 5px solid yellow;
 }
 
 .cell {

@@ -10,7 +10,6 @@ class Cell {
         this.color = null // W / R
         this.type = null // FIXED / PLACED / SHADOW
         this.direction = null // W / E / N / S
-
     }
 }
 
@@ -24,6 +23,7 @@ class Carnac {
         this.secondPlayer = new Player()
         this.activePlayer = new Player()
         this.winner = new Player()
+        this.selectedStone = "STONE_1"
         for (let y = 0; y < this.boardHeight; y++) {
             this.board.push([]);
             for (let x = 0; x < this.boardWidth; x++) {

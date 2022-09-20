@@ -16,17 +16,167 @@
 
   <div id="app">
     <h1>{{carnac.roomName}}</h1>
-    <table id="board">
+    <table class="board">
       <tr v-for="(row, y) in carnac.board">
         <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
           :class="
-          carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : ''"
-          >
+          carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : ''">
           <div :class="color(y,x)" class="symbol"></div>
         </td>
       </tr>
     </table>
     <button @click="mouseClickPass()">PASS</button>
+    <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : ''" @click="selectStone('STONE_1')">
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell white"></td>
+        <td class="cell white"></td>
+        <td class="cell red"></td>
+        <td class="cell white"></td>
+        <td class="cell white"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+    </table>
+
+    <table class="option" :class="carnac.selectedStone === 'STONE_2' ? 'selected' : ''" @click="selectStone('STONE_2')">
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell white"></td>
+        <td class="cell white"></td>
+        <td class="cell white"></td>
+        <td class="cell white"></td>
+        <td class="cell white"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell red"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+    </table>
+
+    <table class="option" :class="carnac.selectedStone === 'STONE_3' ? 'selected' : ''" @click="selectStone('STONE_3')">
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell red"></td>
+        <td class="cell red"></td>
+        <td class="cell white"></td>
+        <td class="cell red"></td>
+        <td class="cell red"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+    </table>
+
+    <table class="option" :class="carnac.selectedStone === 'STONE_4' ? 'selected' : ''" @click="selectStone('STONE_4')">
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell red"></td>
+        <td class="cell red"></td>
+        <td class="cell red"></td>
+        <td class="cell red"></td>
+        <td class="cell red"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+      <tr>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell white"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+      </tr>
+    </table>
 
 
   </div>
