@@ -10,7 +10,6 @@ class Cell {
         this.color = null // W / R
         this.type = null // FIXED / PLACED / SHADOW
         this.direction = null // W / E / N / S
-
     }
 }
 
@@ -24,6 +23,7 @@ class Carnac {
         this.secondPlayer = new Player()
         this.activePlayer = new Player()
         this.winner = new Player()
+        this.selectedStone = "STONE_1"
         for (let y = 0; y < this.boardHeight; y++) {
             this.board.push([]);
             for (let x = 0; x < this.boardWidth; x++) {
@@ -42,7 +42,7 @@ class Carnac {
         );
     }
 
-    move(y, x, player) {
+    move(y, x, stone, player) {
 
         console.log("helloASDASFASD");
         if (this.activePlayer.status === "TIP_OR_PASS") {
@@ -71,9 +71,10 @@ class Carnac {
 
         if (this.activePlayer.status === "PLACE_STONE") {
             if (this.isLegalPlace(y, x, player)) {
+                this.selectedStone = stone;
                 console.log("Move is legal!");
                 console.log("Active player: ", this.activePlayer.id);
-                this.placeStone(y, x, "ST1");
+                this.placeStone(y, x);
                 console.log(this.board);
                 //   this.lastMove = [y, x];
                 //   if (this.isWin(x, y)) {
@@ -151,26 +152,31 @@ class Carnac {
     }
 
 
-    placeStone(y, x, stone) {
+    placeStone(y, x) {
 
 
-        
+
         this.removeOptions()
-        
+
         if (this.board[y][x].type === "FIXED") {
             return
         }
 
         let horizontalSymbol = "R";
         let verticalSymbol = "W";
-        if (stone === "ST1" || stone === "ST2") {
+        if (this.selectedStone === "STONE_1" || this.selectedStone === "STONE_2") {
             horizontalSymbol = "W";
             verticalSymbol = "R";
         }
 
-        if (this.board[y][x].type !== "FIXED")
-        {
+        if (this.board[y][x].type !== "FIXED") {
             this.board[y][x].type = "PLACED";
+        }
+        
+        this.board[y][x].color = "W";
+        if (this.selectedStone === "STONE_1" || this.selectedStone === "STONE_4")
+        {
+            this.board[y][x].color = "R";
         }
 
         if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1].type != "FIXED" && this.board[y][x - 2].type != "FIXED") {
@@ -194,23 +200,23 @@ class Carnac {
 
         }
         if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x].type != "FIXED" && this.board[y - 2][x].type != "FIXED") {
-            this.board[y-1][x].color = verticalSymbol
-            this.board[y-1][x].direction = "N"
-            this.board[y-1][x].type = "SHADOW"
+            this.board[y - 1][x].color = verticalSymbol
+            this.board[y - 1][x].direction = "N"
+            this.board[y - 1][x].type = "SHADOW"
 
-            this.board[y-2][x].color = verticalSymbol
-            this.board[y-2][x].direction = "N"
-            this.board[y-2][x].type = "SHADOW"
+            this.board[y - 2][x].color = verticalSymbol
+            this.board[y - 2][x].direction = "N"
+            this.board[y - 2][x].type = "SHADOW"
 
         }
         if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x].type != "FIXED" && this.board[y + 2][x].type != "FIXED") {
-            this.board[y+1][x].color = verticalSymbol
-            this.board[y+1][x].direction = "S"
-            this.board[y+1][x].type = "SHADOW"
+            this.board[y + 1][x].color = verticalSymbol
+            this.board[y + 1][x].direction = "S"
+            this.board[y + 1][x].type = "SHADOW"
 
-            this.board[y+2][x].color = verticalSymbol
-            this.board[y+2][x].direction = "S"
-            this.board[y+2][x].type = "SHADOW"
+            this.board[y + 2][x].color = verticalSymbol
+            this.board[y + 2][x].direction = "S"
+            this.board[y + 2][x].type = "SHADOW"
 
         }
     }

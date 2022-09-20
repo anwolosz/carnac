@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
   })
 
   
-  socket.on("move", (roomName, y, x) => {
+  socket.on("move", (roomName, y, x, stone) => {
     console.log(roomName, y, x);
     // console.log(rooms);
     if (!(roomName in rooms)) {
@@ -74,10 +74,10 @@ io.on("connection", (socket) => {
       socket.emit("error", "Room not exist");
       return;
     }
-    if (rooms[roomName].move(y, x, socket.id)) {
+    if (rooms[roomName].move(y, x, stone, socket.id)) {
       socket
         .to(roomName)
-        .emit("opponentMove", y, x);
+        .emit("opponentMove", y, x, stone);
     }
   });
 

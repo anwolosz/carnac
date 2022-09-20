@@ -15,8 +15,10 @@ const app = {
             this.carnac.activePlayer.id = firstPlayerId;
             this.carnac.activePlayer.status = "PLACE_STONE"
         });
-        socket.on("opponentMove", (y, x) => {
-            this.carnac.move(y, x, "OPPONENT");
+        socket.on("opponentMove", (y, x, stone) => {
+            let selection = this.carnac.selectedStone
+            this.carnac.move(y, x, stone, "OPPONENT");
+            this.carnac.selectedStone = selection
         });
 
     },
@@ -25,16 +27,16 @@ const app = {
             //TODO: check game end
             if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE")
             {
-                this.carnac.placeStone(y, x, "ST1");
+                this.carnac.placeStone(y, x);
             }
 
         },
         mouseClickCell(y, x) {
             // this.carnac.placeStone(y, x);
             console.log("ITTT?222?");
-            if (this.carnac.move(y, x, socket.id)) {
+            if (this.carnac.move(y, x, this.carnac.selectedStone, socket.id)) {
                 console.log("ITTT??");
-                socket.emit("move", this.carnac.roomName, y, x)
+                socket.emit("move", this.carnac.roomName, y, x, this.carnac.selectedStone)
             }
 
         },
