@@ -16,6 +16,7 @@
 
   <div id="app">
     <h1>{{carnac.roomName}}</h1>
+    <p>{{carnac.stoneCounter}}</>
     <table class="board">
       <tr v-for="(row, y) in carnac.board">
         <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
