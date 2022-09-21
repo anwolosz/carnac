@@ -58,23 +58,26 @@ class Carnac {
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
                 if (this.board[y][x].color === "R") {
-                    this.fill(y, x)
+                    console.log(this.fill(y, x, 0))
                 }
             }
         }
         
     }
 
-    fill(y, x) {
+    fill(y, x, counter) {
+
         if (this.isOutOfBounds(y, x) || this.board[y][x].color !== "R")
         {
-            return
+            return counter;
         }
+        counter++;
         this.board[y][x].color = "B";
-        this.fill(y+1, x);
-        this.fill(y-1, x);
-        this.fill(y, x+1);
-        this.fill(y, x-1);
+        counter = this.fill(y+1, x, counter);
+        counter = this.fill(y-1, x, counter);
+        counter = this.fill(y, x+1, counter);
+        counter = this.fill(y, x-1, counter);
+        return counter;
     }
 
     pass(player) {
