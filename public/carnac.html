@@ -21,7 +21,9 @@
       <tr v-for="(row, y) in carnac.board">
         <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
           :class="
-          carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : ''">
+          carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : '',
+          carnac.board[y][x].counted  && carnac.board[y][x].color === 'R'? 'countedRed' : '',
+          carnac.board[y][x].counted  && carnac.board[y][x].color === 'W'? 'countedWhite' : ''">
           <div :class="color(y,x)" class="symbol"></div>
         </td>
       </tr>

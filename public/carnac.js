@@ -10,6 +10,7 @@ class Cell {
         this.color = null // W / R
         this.type = null // FIXED / PLACED / SHADOW
         this.direction = null // W / E / N / S
+        this.counted = false;
     }
 }
 
@@ -55,28 +56,36 @@ class Carnac {
     }
 
     countDolmen() {
+        let redCounter = 0;
+        let whiteCounter = 0;
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x].color === "R") {
-                    console.log(this.fill(y, x, 0))
+                if (this.board[y][x].color === "R" && this.board[y][x].counted === false) {
+                    console.log(this.fill(y, x, 0, "R"))
+                    redCounter++;
+                }
+                if (this.board[y][x].color === "W" && this.board[y][x].counted === false) {
+                    console.log(this.fill(y, x, 0, "W"))
+                    whiteCounter++;
                 }
             }
         }
+        console.log("RED:", redCounter, " WHITE:", whiteCounter);
         
     }
 
-    fill(y, x, counter) {
+    fill(y, x, counter, color) {
 
-        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== "R")
+        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== color || (this.board[y][x].color === color && this.board[y][x].counted))
         {
             return counter;
         }
         counter++;
-        this.board[y][x].color = "B";
-        counter = this.fill(y+1, x, counter);
-        counter = this.fill(y-1, x, counter);
-        counter = this.fill(y, x+1, counter);
-        counter = this.fill(y, x-1, counter);
+        this.board[y][x].counted = true;
+        counter = this.fill(y+1, x, counter, color);
+        counter = this.fill(y-1, x, counter, color);
+        counter = this.fill(y, x+1, counter, color);
+        counter = this.fill(y, x-1, counter, color);
         return counter;
     }
 
