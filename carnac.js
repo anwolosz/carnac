@@ -23,7 +23,7 @@ class Carnac {
         this.secondPlayer = new Player()
         this.activePlayer = new Player()
         this.winner = new Player()
-        this.stoneCounter = 5;
+        this.stoneCounter = 28;
         this.selectedStone = "STONE_1"
         for (let y = 0; y < this.boardHeight; y++) {
             this.board.push([]);
@@ -62,6 +62,9 @@ class Carnac {
                     }
                 }
                 this.removeOptions();
+                if (this.stoneCounter <= 0) {
+                    this.winner = "NOTNUL";
+                }
                 this.switchPlayer();
                 this.activePlayer.status = "PLACE_STONE";
                 return true;
@@ -88,6 +91,9 @@ class Carnac {
                     }
                 }
                 this.removeOptions();
+                if (this.stoneCounter <= 0) {
+                    this.winner = "NOTNUL";
+                }
                 this.activePlayer.status = "PLACE_STONE";
                 return true;
             }
@@ -194,10 +200,9 @@ class Carnac {
     placeStone(y, x) {
 
 
-
         this.removeOptions()
 
-        if (this.board[y][x].type === "FIXED") {
+        if (this.board[y][x].type === "FIXED" || this.winner.id !== null) {
             return
         }
 
@@ -260,7 +265,5 @@ class Carnac {
         }
     }
 }
-
-
 
 module.exports = Carnac;
