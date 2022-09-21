@@ -10,6 +10,7 @@ class Cell {
         this.color = null // W / R
         this.type = null // FIXED / PLACED / SHADOW
         this.direction = null // W / E / N / S
+        this.counted = false;
     }
 }
 
@@ -33,13 +34,11 @@ class Carnac {
         }
     }
 
-    countEmptyCells()
-    {
+    countEmptyCells() {
         let counter = 0;
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x].type !== "FIXED")
-                {
+                if (this.board[y][x].type !== "FIXED") {
                     counter++;
                 }
             }
@@ -56,15 +55,50 @@ class Carnac {
         );
     }
 
-    pass(player)
-    {
-        console.log(this.activePlayer.status);
-        if (this.activePlayer.status === "TIP_OR_PASS")
+    countDolmen() {
+        let redCounter = 0;
+        let whiteCounter = 0;
+        for (let y = 0; y < this.boardHeight; y++) {
+            for (let x = 0; x < this.boardWidth; x++) {
+                if (this.board[y][x].color === "R" && this.board[y][x].counted === false) {
+                    if (this.countStonesInDolmen(y, x, 0, "R") >= 3)
+                    {
+                        redCounter++;
+                    }
+                }
+                if (this.board[y][x].color === "W" && this.board[y][x].counted === false) {
+                    if (this.countStonesInDolmen(y, x, 0, "W") >= 3)
+                    {
+                        whiteCounter++;
+                    }
+                }
+            }
+        }
+        console.log("RED:", redCounter, " WHITE:", whiteCounter);
+        
+    }
+
+    countStonesInDolmen(y, x, counter, color) {
+
+        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== color || (this.board[y][x].color === color && this.board[y][x].counted))
         {
+            return counter;
+        }
+        counter++;
+        this.board[y][x].counted = true;
+        counter = this.countStonesInDolmen(y+1, x, counter, color);
+        counter = this.countStonesInDolmen(y-1, x, counter, color);
+        counter = this.countStonesInDolmen(y, x+1, counter, color);
+        counter = this.countStonesInDolmen(y, x-1, counter, color);
+        return counter;
+    }
+
+    pass(player) {
+        console.log(this.activePlayer.status);
+        if (this.activePlayer.status === "TIP_OR_PASS") {
             console.log("itetete");
             console.log(this.activePlayer.id, player);
-            if (this.isLegalPass(player))
-            {
+            if (this.isLegalPass(player)) {
                 console.log("TEST");
                 for (let y = 0; y < this.boardHeight; y++) {
                     for (let x = 0; x < this.boardWidth; x++) {
@@ -157,11 +191,10 @@ class Carnac {
         this.activePlayer.status = "TIP_OR_PASS"
     }
 
-    isLegalPass(player)
-    {
+    isLegalPass(player) {
         return (
-        this.winner.id === null &&
-        this.activePlayer.id === player
+            this.winner.id === null &&
+            this.activePlayer.id === player
         )
     }
 
@@ -231,10 +264,9 @@ class Carnac {
         if (this.board[y][x].type !== "FIXED") {
             this.board[y][x].type = "PLACED";
         }
-        
+
         this.board[y][x].color = "W";
-        if (this.selectedStone === "STONE_1" || this.selectedStone === "STONE_4")
-        {
+        if (this.selectedStone === "STONE_1" || this.selectedStone === "STONE_4") {
             this.board[y][x].color = "R";
         }
 
