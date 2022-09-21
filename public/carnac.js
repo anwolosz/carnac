@@ -33,6 +33,19 @@ class Carnac {
         }
     }
 
+    countEmptyCells()
+    {
+        let counter = 0;
+        for (let y = 0; y < this.boardHeight; y++) {
+            for (let x = 0; x < this.boardWidth; x++) {
+                if (this.board[y][x].type !== "FIXED")
+                {
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
 
     isLegalTip(y, x, player) {
         return (
@@ -62,7 +75,8 @@ class Carnac {
                     }
                 }
                 this.removeOptions();
-                if (this.stoneCounter <= 0) {
+                if (this.stoneCounter <= 0 || this.countEmptyCells() === 0) {
+                    console.log("GAME END2");
                     this.winner = "NOTNUL";
                 }
                 this.switchPlayer();
@@ -92,6 +106,7 @@ class Carnac {
                 }
                 this.removeOptions();
                 if (this.stoneCounter <= 0) {
+                    console.log("GAME END1");
                     this.winner = "NOTNUL";
                 }
                 this.activePlayer.status = "PLACE_STONE";
