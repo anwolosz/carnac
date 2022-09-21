@@ -63,6 +63,10 @@ const app = {
             {
                 return "red";
             }
+            if (this.carnac.board[y][x].color === 'B')
+            {
+                return "blue";
+            }
             return ""
         },
         selectStone(stone)

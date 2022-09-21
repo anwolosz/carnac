@@ -33,13 +33,11 @@ class Carnac {
         }
     }
 
-    countEmptyCells()
-    {
+    countEmptyCells() {
         let counter = 0;
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x].type !== "FIXED")
-                {
+                if (this.board[y][x].type !== "FIXED") {
                     counter++;
                 }
             }
@@ -56,15 +54,35 @@ class Carnac {
         );
     }
 
-    pass(player)
-    {
-        console.log(this.activePlayer.status);
-        if (this.activePlayer.status === "TIP_OR_PASS")
+    countDolmen() {
+        for (let y = 0; y < this.boardHeight; y++) {
+            for (let x = 0; x < this.boardWidth; x++) {
+                if (this.board[y][x].color === "R") {
+                    this.fill(y, x)
+                }
+            }
+        }
+        
+    }
+
+    fill(y, x) {
+        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== "R")
         {
+            return
+        }
+        this.board[y][x].color = "B";
+        this.fill(y+1, x);
+        this.fill(y-1, x);
+        this.fill(y, x+1);
+        this.fill(y, x-1);
+    }
+
+    pass(player) {
+        console.log(this.activePlayer.status);
+        if (this.activePlayer.status === "TIP_OR_PASS") {
             console.log("itetete");
             console.log(this.activePlayer.id, player);
-            if (this.isLegalPass(player))
-            {
+            if (this.isLegalPass(player)) {
                 console.log("TEST");
                 for (let y = 0; y < this.boardHeight; y++) {
                     for (let x = 0; x < this.boardWidth; x++) {
@@ -157,11 +175,10 @@ class Carnac {
         this.activePlayer.status = "TIP_OR_PASS"
     }
 
-    isLegalPass(player)
-    {
+    isLegalPass(player) {
         return (
-        this.winner.id === null &&
-        this.activePlayer.id === player
+            this.winner.id === null &&
+            this.activePlayer.id === player
         )
     }
 
@@ -231,10 +248,9 @@ class Carnac {
         if (this.board[y][x].type !== "FIXED") {
             this.board[y][x].type = "PLACED";
         }
-        
+
         this.board[y][x].color = "W";
-        if (this.selectedStone === "STONE_1" || this.selectedStone === "STONE_4")
-        {
+        if (this.selectedStone === "STONE_1" || this.selectedStone === "STONE_4") {
             this.board[y][x].color = "R";
         }
 

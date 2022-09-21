@@ -27,6 +27,7 @@
       </tr>
     </table>
     <button @click="mouseClickPass()">PASS</button>
+    <button @click="carnac.countDolmen()">countdolemn</button>
     <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : ''" @click="selectStone('STONE_1')">
       <tr>
         <td class="cell"></td>
