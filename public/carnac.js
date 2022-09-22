@@ -17,6 +17,7 @@ class Cell {
 
 class Carnac {
     constructor(roomName) {
+        this.gameStatus = "WAITING"
         this.roomName = roomName
         this.board = []
         this.boardWidth = 10;
@@ -118,6 +119,7 @@ class Carnac {
             else {
                 this.winner = this.secondPlayer.id
             }
+            this.gameStatus = "GAME_OVER"
         }
     }
 
@@ -205,7 +207,7 @@ class Carnac {
 
     isLegalAction(player) {
         return (
-            this.winner === null &&
+            this.gameStatus === "PLAYING" &&
             this.activePlayer.id === player
         );
     }

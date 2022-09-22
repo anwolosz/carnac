@@ -54,12 +54,13 @@ io.on("connection", (socket) => {
       rooms[roomName].firstPlayer.id = socket.id
       rooms[roomName].activePlayer.id = socket.id
       rooms[roomName].activePlayer.status = "PLACE_STONE"
-      io.to(socket.id).emit("start", socket.id, "OPPONENT");
     }
     else if (rooms[roomName].hasFreePlayer())
     {
       rooms[roomName].secondPlayer.id = socket.id
+      rooms[roomName].gameStatus = "PLAYING"
       io.to(socket.id).emit("start", "OPPONENT", socket.id);
+      socket.broadcast.emit("start", rooms[roomName].firstPlayer.id, "OPPONENT");
     }
 
     console.log(rooms);

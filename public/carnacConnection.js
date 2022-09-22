@@ -10,6 +10,7 @@ const app = {
         socket.emit("connectRoom", this.carnac.roomName);
         socket.on("start", (firstPlayerId, secondPlayerId) => {
             console.log("Hello kezdünk");
+            this.carnac.gameStatus = "PLAYING"
             this.carnac.firstPlayer.id = firstPlayerId
             this.carnac.secondPlayer.id = secondPlayerId
             this.carnac.activePlayer.id = firstPlayerId;
