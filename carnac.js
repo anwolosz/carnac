@@ -49,6 +49,7 @@ class Carnac {
 
     isLegalTip(y, x, player) {
         return (
+            this.activePlayer.status === "TIP_OR_PASS" &&
             this.winner === null &&
             this.activePlayer.id === player &&
             !this.isOutOfBounds(y, x) &&
@@ -63,23 +64,20 @@ class Carnac {
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
                 if (this.board[y][x].color === "R" && this.board[y][x].counted === false) {
-                    if (this.countStonesInDolmen(y, x, 0, "R") >= 3)
-                    {
+                    if (this.countStonesInDolmen(y, x, 0, "R") >= 3) {
                         redCounter++;
-                        dolmenStarterPoints.push([y,x])
+                        dolmenStarterPoints.push([y, x])
                     }
                 }
                 if (this.board[y][x].color === "W" && this.board[y][x].counted === false) {
-                    if (this.countStonesInDolmen(y, x, 0, "W") >= 3)
-                    {
+                    if (this.countStonesInDolmen(y, x, 0, "W") >= 3) {
                         whiteCounter++;
-                        dolmenStarterPoints.push([y,x])
+                        dolmenStarterPoints.push([y, x])
                     }
                 }
             }
         }
-        for (let i = 0; i<dolmenStarterPoints.length; i++)
-        {
+        for (let i = 0; i < dolmenStarterPoints.length; i++) {
             let y_ = dolmenStarterPoints[i][0]
             let x_ = dolmenStarterPoints[i][1]
             this.fillDolmen(y_, x_, this.board[y_][x_].color)
@@ -87,48 +85,42 @@ class Carnac {
         }
         console.log("RED:", redCounter, " WHITE:", whiteCounter);
         return [redCounter, whiteCounter];
-        
+
     }
 
-    fillDolmen(y, x, color)
-    {
-        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== color || (this.board[y][x].color === color && this.board[y][x].partOfDolmen))
-        {
+    fillDolmen(y, x, color) {
+        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== color || (this.board[y][x].color === color && this.board[y][x].partOfDolmen)) {
             return;
         }
         this.board[y][x].partOfDolmen = true;
-        this.fillDolmen(y+1, x, color);
-        this.fillDolmen(y-1, x, color);
-        this.fillDolmen(y, x+1, color);
-        this.fillDolmen(y, x-1, color);
+        this.fillDolmen(y + 1, x, color);
+        this.fillDolmen(y - 1, x, color);
+        this.fillDolmen(y, x + 1, color);
+        this.fillDolmen(y, x - 1, color);
     }
 
     countStonesInDolmen(y, x, counter, color) {
 
-        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== color || (this.board[y][x].color === color && this.board[y][x].counted))
-        {
+        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== color || (this.board[y][x].color === color && this.board[y][x].counted)) {
             return counter;
         }
         counter++;
         this.board[y][x].counted = true;
-        counter = this.countStonesInDolmen(y+1, x, counter, color);
-        counter = this.countStonesInDolmen(y-1, x, counter, color);
-        counter = this.countStonesInDolmen(y, x+1, counter, color);
-        counter = this.countStonesInDolmen(y, x-1, counter, color);
+        counter = this.countStonesInDolmen(y + 1, x, counter, color);
+        counter = this.countStonesInDolmen(y - 1, x, counter, color);
+        counter = this.countStonesInDolmen(y, x + 1, counter, color);
+        counter = this.countStonesInDolmen(y, x - 1, counter, color);
         return counter;
     }
 
-    checkWin()
-    {
+    checkWin() {
         if (this.stoneCounter <= 0 || this.countEmptyCells() === 0) {
             console.log("GAME END2");
             let results = this.countDolmen();
-            if (results[0] > results[1])
-            {
+            if (results[0] > results[1]) {
                 this.winner = this.firstPlayer.id;
             }
-            else if (results[0] === results[1])
-            {
+            else if (results[0] === results[1]) {
                 this.winner = "DRAW"
             }
             else {
@@ -139,85 +131,75 @@ class Carnac {
 
     pass(player) {
         console.log(this.activePlayer.status);
-        if (this.activePlayer.status === "TIP_OR_PASS") {
-            console.log("itetete");
-            console.log(this.activePlayer.id, player);
-            if (this.isLegalPass(player)) {
-                console.log("TEST");
-                for (let y = 0; y < this.boardHeight; y++) {
-                    for (let x = 0; x < this.boardWidth; x++) {
-                        if (this.board[y][x].type === "PLACED") {
-                            this.board[y][x].type = "FIXED";
-                            break;
-                        }
+        if (this.isLegalPass(player)) {
+            console.log("TEST");
+            for (let y = 0; y < this.boardHeight; y++) {
+                for (let x = 0; x < this.boardWidth; x++) {
+                    if (this.board[y][x].type === "PLACED") {
+                        this.board[y][x].type = "FIXED";
+                        break;
                     }
                 }
-                this.removeOptions();
-                this.checkWin()
-                this.switchPlayer();
-                this.activePlayer.status = "PLACE_STONE";
-                return true;
             }
-            else {
-                return false;
-            }
+            this.removeOptions();
+            this.checkWin()
+            this.switchPlayer();
+            this.activePlayer.status = "PLACE_STONE";
+            return true;
+        }
+        else {
+            console.log(player);
+            console.log(this.activePlayer.id);
+            console.log("Move is illlegal...");
+            return false;
         }
     }
 
     move(y, x, stone, player) {
 
         console.log("helloASDASFASD");
-        if (this.activePlayer.status === "TIP_OR_PASS") {
-            if (this.isLegalTip(y, x, player)) {
-                let tipSymbol = this.board[y][x].direction
-                for (let y1 = 0; y1 < this.boardHeight; y1++) {
-                    for (let x1 = 0; x1 < this.boardWidth; x1++) {
-                        console.log(this.board[y][x]);
-                        console.log(this.board[y1][x1]);
-                        if (this.board[y1][x1].direction === tipSymbol) {
-                            this.board[y1][x1].type = "FIXED"
-                        }
+        if (this.isLegalTip(y, x, player)) {
+            let tipSymbol = this.board[y][x].direction
+            for (let y1 = 0; y1 < this.boardHeight; y1++) {
+                for (let x1 = 0; x1 < this.boardWidth; x1++) {
+                    console.log(this.board[y][x]);
+                    console.log(this.board[y1][x1]);
+                    if (this.board[y1][x1].direction === tipSymbol) {
+                        this.board[y1][x1].type = "FIXED"
                     }
                 }
-                this.removeOptions();
-                this.checkWin();
-                this.activePlayer.status = "PLACE_STONE";
-                return true;
             }
-            else {
-                console.log(player);
-                console.log(this.activePlayer.id);
-                console.log("Move is illlegal...");
-                return false;
-            }
+            this.removeOptions();
+            this.checkWin();
+            this.activePlayer.status = "PLACE_STONE";
+            return true;
         }
 
-        if (this.activePlayer.status === "PLACE_STONE") {
-            if (this.isLegalPlace(y, x, player)) {
-                this.selectedStone = stone;
-                console.log("Move is legal!");
-                console.log("Active player: ", this.activePlayer.id);
-                this.placeStone(y, x);
-                console.log(this.board);
-                //   this.lastMove = [y, x];
-                //   if (this.isWin(x, y)) {
-                //     this.winner = this.activePlayer.id;
-                //     console.log(`End of Game. Winner is ${this.activePlayer.id}`);
-                //     return true;
-                //   }
-                //   console.log(this.board[0]);
-                //   this.noteMove(x, y);
-                this.switchPlayer();
-                console.log("Next player: ", this.activePlayer.id);
-                this.stoneCounter--;
-                return true;
-            } else {
-                console.log(player);
-                console.log(this.activePlayer.id);
-                console.log("Move is illlegal...");
-                return false;
-            }
+        else if (this.isLegalPlace(y, x, player)) {
+            this.selectedStone = stone;
+            console.log("Move is legal!");
+            console.log("Active player: ", this.activePlayer.id);
+            this.placeStone(y, x);
+            console.log(this.board);
+            //   this.lastMove = [y, x];
+            //   if (this.isWin(x, y)) {
+            //     this.winner = this.activePlayer.id;
+            //     console.log(`End of Game. Winner is ${this.activePlayer.id}`);
+            //     return true;
+            //   }
+            //   console.log(this.board[0]);
+            //   this.noteMove(x, y);
+            this.switchPlayer();
+            console.log("Next player: ", this.activePlayer.id);
+            this.stoneCounter--;
+            return true;
+        } else {
+            console.log(player);
+            console.log(this.activePlayer.id);
+            console.log("Move is illlegal...");
+            return false;
         }
+
     }
 
     switchPlayer() {
@@ -231,6 +213,7 @@ class Carnac {
 
     isLegalPass(player) {
         return (
+            this.activePlayer.status === "TIP_OR_PASS" &&
             this.winner === null &&
             this.activePlayer.id === player
         )
@@ -250,6 +233,7 @@ class Carnac {
 
     isLegalPlace(y, x, player) {
         return (
+            this.activePlayer.status === "PLACE_STONE" &&
             this.winner === null &&
             this.activePlayer.id === player &&
             !this.isOutOfBounds(y, x) &&
