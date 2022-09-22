@@ -16,6 +16,8 @@
 
   <div id="app">
     <h1>{{carnac.roomName}}</h1>
+    <h2>{{playerColor()}}</h2>
+    <h2>{{carnac.winner === "OPPONENT" ? 'You lose...': (carnac.winner === "DRAW" ? 'Its a draw...' : (carnac.winner === null ? '':'You won!')) }}</h2>
     <p>{{carnac.stoneCounter}}</>
     <table class="board">
       <tr v-for="(row, y) in carnac.board">

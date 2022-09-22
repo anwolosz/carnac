@@ -72,8 +72,19 @@ const app = {
         selectStone(stone)
         {
             this.carnac.selectedStone = stone;
+        },
+        playerColor()
+        {
+            if (this.carnac.firstPlayer.id === "OPPONENT")
+            {
+                return "WHITE"
+            }
+            if (this.carnac.firstPlayer.id === null)
+            {
+                return ""
+            }
+            return "RED"
         }
-
     },
 };
 
