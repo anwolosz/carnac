@@ -47,15 +47,7 @@ class Carnac {
         return counter;
     }
 
-    isLegalTip(y, x, player) {
-        return (
-            this.activePlayer.status === "TIP_OR_PASS" &&
-            this.winner === null &&
-            this.activePlayer.id === player &&
-            !this.isOutOfBounds(y, x) &&
-            (this.board[y][x].type === "SHADOW")
-        );
-    }
+
 
     countDolmen() {
         let redCounter = 0;
@@ -131,7 +123,7 @@ class Carnac {
 
     pass(player) {
         console.log(this.activePlayer.status);
-        if (this.isLegalPass(player)) {
+        if (this.isLegalAction(player) && this.isLegalPass()) {
             console.log("TEST");
             for (let y = 0; y < this.boardHeight; y++) {
                 for (let x = 0; x < this.boardWidth; x++) {
@@ -158,7 +150,7 @@ class Carnac {
     move(y, x, stone, player) {
 
         console.log("helloASDASFASD");
-        if (this.isLegalTip(y, x, player)) {
+        if (this.isLegalAction(player) && this.isLegalTip(y, x)) {
             let tipSymbol = this.board[y][x].direction
             for (let y1 = 0; y1 < this.boardHeight; y1++) {
                 for (let x1 = 0; x1 < this.boardWidth; x1++) {
@@ -175,7 +167,7 @@ class Carnac {
             return true;
         }
 
-        else if (this.isLegalPlace(y, x, player)) {
+        else if (this.isLegalAction(player) && this.isLegalPlace(y, x)) {
             this.selectedStone = stone;
             console.log("Move is legal!");
             console.log("Active player: ", this.activePlayer.id);
@@ -211,35 +203,35 @@ class Carnac {
         this.activePlayer.status = "TIP_OR_PASS"
     }
 
-    isLegalPass(player) {
+    isLegalAction(player) {
         return (
-            this.activePlayer.status === "TIP_OR_PASS" &&
             this.winner === null &&
             this.activePlayer.id === player
+        );
+    }
+
+    isLegalPass() {
+        return (
+            this.activePlayer.status === "TIP_OR_PASS"
         )
     }
 
-    // isPassAllowed() {
-    //     // If there is no cell with shadow
-    //     for (let y = 0; y < this.boardHeight; y++) {
-    //         for (let x = 0; x < this.boardWidth; x++) {
-    //             if (this.board[y][x].type === "SHADOW") {
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    //     return false;
-    // }
+    isLegalTip(y, x) {
+        return (
+            this.activePlayer.status === "TIP_OR_PASS" &&
+            !this.isOutOfBounds(y, x) &&
+            (this.board[y][x].type === "SHADOW")
+        );
+    }
 
-    isLegalPlace(y, x, player) {
+    isLegalPlace(y, x) {
         return (
             this.activePlayer.status === "PLACE_STONE" &&
-            this.winner === null &&
-            this.activePlayer.id === player &&
             !this.isOutOfBounds(y, x) &&
             this.board[y][x].type !== "FIXED"
         );
     }
+
 
     isOutOfBounds(y, x) {
         return x >= this.boardWidth || y >= this.boardHeight || x < 0 || y < 0;
