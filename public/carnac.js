@@ -7,10 +7,11 @@ class Player {
 
 class Cell {
     constructor() {
-        this.color = null // W / R
+        this.color = null // W / R 
         this.type = null // FIXED / PLACED / SHADOW
         this.direction = null // W / E / N / S
         this.counted = false;
+        this.partOfDolmen = false;
     }
 }
 
@@ -58,24 +59,47 @@ class Carnac {
     countDolmen() {
         let redCounter = 0;
         let whiteCounter = 0;
+        let dolmenStarterPoints = [];
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
                 if (this.board[y][x].color === "R" && this.board[y][x].counted === false) {
                     if (this.countStonesInDolmen(y, x, 0, "R") >= 3)
                     {
                         redCounter++;
+                        dolmenStarterPoints.push([y,x])
                     }
                 }
                 if (this.board[y][x].color === "W" && this.board[y][x].counted === false) {
                     if (this.countStonesInDolmen(y, x, 0, "W") >= 3)
                     {
                         whiteCounter++;
+                        dolmenStarterPoints.push([y,x])
                     }
                 }
             }
         }
+        for (let i = 0; i<dolmenStarterPoints.length; i++)
+        {
+            let y_ = dolmenStarterPoints[i][0]
+            let x_ = dolmenStarterPoints[i][1]
+            this.fillDolmen(y_, x_, this.board[y_][x_].color)
+            console.log(dolmenStarterPoints[i]);
+        }
         console.log("RED:", redCounter, " WHITE:", whiteCounter);
         
+    }
+
+    fillDolmen(y, x, color)
+    {
+        if (this.isOutOfBounds(y, x) || this.board[y][x].color !== color || (this.board[y][x].color === color && this.board[y][x].partOfDolmen))
+        {
+            return;
+        }
+        this.board[y][x].partOfDolmen = true;
+        this.fillDolmen(y+1, x, color);
+        this.fillDolmen(y-1, x, color);
+        this.fillDolmen(y, x+1, color);
+        this.fillDolmen(y, x-1, color);
     }
 
     countStonesInDolmen(y, x, counter, color) {
