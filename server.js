@@ -28,17 +28,23 @@ app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allo
   if (!isRoomExists(req.body.room)) {
     let boardWidth = 10;
     let boardHeight = 7;
-    if (req.body.boardSize === "8x5")
-    {
+    if (req.body.boardSize === "8x5") {
       boardWidth = 8;
       boardHeight = 5;
     }
-    if (req.body.boardSize === "14x9")
-    {
+    if (req.body.boardSize === "14x9") {
       boardWidth = 14;
       boardHeight = 9;
     }
-    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight);
+
+    if (req.body.creatorColor === "RANDOM")
+    {
+
+    }
+
+    let creatorColor = req.body.creatorColor
+
+    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor);
     return res.json({ exists: false })
   }
   return res.json({ exists: true })
@@ -49,14 +55,14 @@ app.post("/test", (req, res) => {
   console.log(req.body);
   console.log("bb");
 
-  res.json({test: "works?"});
+  res.json({ test: "works?" });
 });
 
 app.get("/info/:room", (req, res) => {
   if (!isRoomExists(req.params.room)) {
     return res.redirect("/");
   }
-  return res.json({boardWidth: rooms[req.params.room].boardWidth, boardHeight: rooms[req.params.room].boardHeight})
+  return res.json({ boardWidth: rooms[req.params.room].boardWidth, boardHeight: rooms[req.params.room].boardHeight })
 });
 
 app.get("/:room", (req, res) => {
@@ -73,24 +79,37 @@ io.on("connection", (socket) => {
 
   socket.on("connectRoom", (roomName) => {
     socket.join(roomName); //TODO: check if really exists the room
-    if (rooms[roomName].isEmpty()) 
-    {
-      rooms[roomName].firstPlayer.id = socket.id
-      rooms[roomName].activePlayer.id = socket.id
-      rooms[roomName].activePlayer.status = "PLACE_STONE"
+    if (rooms[roomName].isEmpty()) {
+      if (rooms[roomName].creatorColor === "RED")
+      {
+        rooms[roomName].firstPlayer.id = socket.id
+      }
+      else {
+        rooms[roomName].secondPlayer.id = socket.id
+      }
     }
-    else if (rooms[roomName].hasFreePlayer())
-    {
-      rooms[roomName].secondPlayer.id = socket.id
+    else if (rooms[roomName].hasFreePlayer()) {
+      if (rooms[roomName].creatorColor === "RED")
+      {
+        rooms[roomName].secondPlayer.id = socket.id
+        io.to(socket.id).emit("start", "OPPONENT", socket.id);
+        socket.broadcast.emit("start", rooms[roomName].firstPlayer.id, "OPPONENT");
+      }
+      else {
+        rooms[roomName].firstPlayer.id = socket.id
+        io.to(socket.id).emit("start", socket.id, "OPPONENT");
+        socket.broadcast.emit("start", "OPPONENT", rooms[roomName].secondPlayer.id);
+      }
+      rooms[roomName].activePlayer.id = rooms[roomName].firstPlayer.id
+      rooms[roomName].activePlayer.status = "PLACE_STONE"
       rooms[roomName].gameStatus = "PLAYING"
-      io.to(socket.id).emit("start", "OPPONENT", socket.id);
-      socket.broadcast.emit("start", rooms[roomName].firstPlayer.id, "OPPONENT");
     }
 
+    console.log(rooms[roomName].creatorColor);
     console.log(rooms);
   })
 
-  
+
   socket.on("move", (roomName, y, x, stone) => {
     console.log(roomName, y, x);
     // console.log(rooms);

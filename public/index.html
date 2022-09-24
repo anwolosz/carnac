@@ -15,7 +15,7 @@
   <h1>Carnac</h1>
   <div id="app">
     <div class="createSection">
-      <div class="content">
+      <div class="content-x">
         <form class="settings">
           <label>Room name:</label>
           <input type="text" v-model="createRoomName" placeholder="Room name" size="10">
@@ -31,15 +31,9 @@
           <hr>
 
           <i class="bi bi-person-bounding-box settingIcon"></i>
-          <div class="firstPlayerIcon">
-            <i class="bi bi-command red"></i>
-          </div>
-          <div class="firstPlayerIcon selected">
-            <i class="bi bi-dice-5 orange"></i>
-          </div>
-          <div class="firstPlayerIcon">
-            <i class="bi bi-bullseye white"></i>
-          </div>
+          <div @click="selectColor('RED')   " :class="creatorColor === 'RED' ? 'selected' : ''" class="firstPlayerIcon"><i class="bi bi-command red"></i></div>
+          <div @click="selectColor('RANDOM')" :class="creatorColor === 'RANDOM' ? 'selected' : ''" class="firstPlayerIcon"><i class="bi bi-dice-5 orange"></i></div>
+          <div @click="selectColor('WHITE') " :class="creatorColor === 'WHITE' ? 'selected' : ''" class="firstPlayerIcon"><i class="bi bi-bullseye white"></i></div>
 
 
         </form>

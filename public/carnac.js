@@ -16,7 +16,8 @@ class Cell {
 }
 
 class Carnac {
-    constructor(roomName, boardWidth, boardHeight) {
+    constructor(roomName, boardWidth, boardHeight, creatorColor) {
+        this.creatorColor = creatorColor
         this.gameStatus = "WAITING"
         this.roomName = roomName
         this.board = []

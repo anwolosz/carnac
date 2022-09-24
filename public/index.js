@@ -3,7 +3,8 @@ const app = {
         return {
             createRoomName: (Math.random() + 1).toString(36).substring(7),
             joinRoomName: "",
-            boardSize: "10x7"
+            boardSize: "10x7",
+            creatorColor: "RANDOM"
         };
     },
     methods: {
@@ -22,7 +23,7 @@ const app = {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ room: this.createRoomName, boardSize: this.boardSize })
+                body: JSON.stringify({ room: this.createRoomName, boardSize: this.boardSize, creatorColor: this.creatorColor })
             });
 
             const content = await rawResponse.json();
@@ -53,6 +54,10 @@ const app = {
         selectBoardSize(size)
         {
             this.boardSize = size;
+        },
+        selectColor(color)
+        {
+            this.creatorColor = color;
         }
     },
 };
