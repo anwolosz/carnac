@@ -13,18 +13,26 @@ const app = {
         isEmptyString(name) {
             return name === "";
         },
-        createRoom() {
+        async createRoom() {
             console.log("http://localhost:3000/createRoom/" + this.createRoomName);
-            fetch("http://localhost:3000/createRoom/" + this.createRoomName) // TODO: change localhost to root host
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.exists) {
-                        window.location.href = "http://localhost:3000/" + this.createRoomName;
-                    }
-                    else {
-                        console.log("The room is already exists");
-                    }
-                })
+            const rawResponse = await fetch("http://localhost:3000/createRoom/", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ room: this.createRoomName })
+            });
+
+            const content = await rawResponse.json();
+            console.log(content);
+            if (!content.exists) {
+                console.log("here");
+                window.location.href = "http://localhost:3000/" + this.createRoomName;
+            }
+            else {
+                console.log("The room is already exists");
+            }
         },
         joinRoom() {
             console.log("http://localhost:3000/isExists/" + this.joinRoomName);
@@ -40,7 +48,7 @@ const app = {
                 })
 
 
-        }
+        },
     },
 };
 

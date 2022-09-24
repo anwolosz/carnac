@@ -4,7 +4,7 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-
+app.use(express.json());
 
 const Carnac = require("./carnac");
 
@@ -24,14 +24,21 @@ app.get("/isExists/:room", (req, res) => {
   res.json({ exists: isRoomExists(req.params.room) })
 });
 
-app.get("/createRoom/:room", (req, res) => { //TODO: check room name rules. dont allow "/" for example.
-  if (!isRoomExists(req.params.room)) {
-    rooms[req.params.room] = new Carnac(req.params.room);
+app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allow "/" for example.
+  if (!isRoomExists(req.body.room)) {
+    rooms[req.body.room] = new Carnac(req.body.room);
     return res.json({ exists: false })
   }
   return res.json({ exists: true })
 });
 
+app.post("/test", (req, res) => {
+  console.log("aa");
+  console.log(req.body);
+  console.log("bb");
+
+  res.json({test: "works?"});
+});
 
 
 
