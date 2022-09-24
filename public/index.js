@@ -3,6 +3,7 @@ const app = {
         return {
             createRoomName: (Math.random() + 1).toString(36).substring(7),
             joinRoomName: "",
+            boardSize: "10x7"
         };
     },
     methods: {
@@ -21,7 +22,7 @@ const app = {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ room: this.createRoomName, boardSize: "8x5" })
+                body: JSON.stringify({ room: this.createRoomName, boardSize: this.boardSize })
             });
 
             const content = await rawResponse.json();
@@ -49,6 +50,10 @@ const app = {
 
 
         },
+        selectBoardSize(size)
+        {
+            this.boardSize = size;
+        }
     },
 };
 

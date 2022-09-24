@@ -21,9 +21,9 @@
           <input type="text" v-model="createRoomName" placeholder="Room name" size="10">
           <hr>
           <i class="bi bi-aspect-ratio settingIcon"></i>
-          <div class="boardSizeIcon bI-small">8×5</div>
-          <div class="boardSizeIcon bI-medium selected">10×7</div>
-          <div class="boardSizeIcon bI-large">14×9</div>
+          <div @click="selectBoardSize('8x5') " :class="boardSize === '8x5' ? 'selected' : ''" class="boardSizeIcon bI-small">8×5</div>
+          <div @click="selectBoardSize('10x7')" :class="boardSize === '10x7' ? 'selected' : ''" class="boardSizeIcon bI-medium">10×7</div>
+          <div @click="selectBoardSize('14x9')" :class="boardSize === '14x9' ? 'selected' : ''" class="boardSizeIcon bI-large">14×9</div>
           <hr>
 
           <i class="bi bi-hourglass-split settingIcon"></i>
