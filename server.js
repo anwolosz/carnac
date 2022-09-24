@@ -37,12 +37,12 @@ app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allo
       boardHeight = 9;
     }
 
+    let creatorColor = req.body.creatorColor
     if (req.body.creatorColor === "RANDOM")
     {
-
+      creatorColor = Math.random() >= 0.5 ? "RED" : "WHITE"
     }
 
-    let creatorColor = req.body.creatorColor
 
     rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor);
     return res.json({ exists: false })
