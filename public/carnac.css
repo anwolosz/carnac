@@ -1,3 +1,8 @@
+#app {
+    display: none;
+}
+
+
 .board {
     margin: auto;
     user-select: none;

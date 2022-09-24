@@ -16,12 +16,12 @@ class Cell {
 }
 
 class Carnac {
-    constructor(roomName) {
+    constructor(roomName, boardWidth, boardHeight) {
         this.gameStatus = "WAITING"
         this.roomName = roomName
         this.board = []
-        this.boardWidth = 10;
-        this.boardHeight = 7;
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
         this.firstPlayer = new Player()
         this.secondPlayer = new Player()
         this.activePlayer = new Player()

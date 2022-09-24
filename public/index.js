@@ -21,7 +21,7 @@ const app = {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ room: this.createRoomName })
+                body: JSON.stringify({ room: this.createRoomName, boardSize: "8x5" })
             });
 
             const content = await rawResponse.json();

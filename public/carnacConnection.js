@@ -1,12 +1,17 @@
 var socket = io();
 
+
+
+
 const app = {
     data() {
         return {
-            carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0])
+            carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth)
         }
     },
     mounted() {
+        this.carnac = new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardHeight)
+        console.log("mounted");
         socket.emit("connectRoom", this.carnac.roomName);
         socket.on("start", (firstPlayerId, secondPlayerId) => {
             console.log("Hello kezdünk");
@@ -31,8 +36,7 @@ const app = {
     methods: {
         mouseOverCell(y, x) {
             //TODO: check game end
-            if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE")
-            {
+            if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE") {
                 this.carnac.placeStone(y, x);
             }
 
@@ -46,42 +50,32 @@ const app = {
             }
 
         },
-        mouseClickPass()
-        {
-            if (this.carnac.pass(socket.id))
-            {
+        mouseClickPass() {
+            if (this.carnac.pass(socket.id)) {
                 socket.emit("pass", this.carnac.roomName)
                 console.log("PAss");
             }
         },
-        color(y, x)
-        {
-            if (this.carnac.board[y][x].color === 'W')
-            {
+        color(y, x) {
+            if (this.carnac.board[y][x].color === 'W') {
                 return "white";
             }
-            if (this.carnac.board[y][x].color === 'R')
-            {
+            if (this.carnac.board[y][x].color === 'R') {
                 return "red";
             }
-            if (this.carnac.board[y][x].color === 'B')
-            {
+            if (this.carnac.board[y][x].color === 'B') {
                 return "blue";
             }
             return ""
         },
-        selectStone(stone)
-        {
+        selectStone(stone) {
             this.carnac.selectedStone = stone;
         },
-        playerColor()
-        {
-            if (this.carnac.firstPlayer.id === "OPPONENT")
-            {
+        playerColor() {
+            if (this.carnac.firstPlayer.id === "OPPONENT") {
                 return "WHITE"
             }
-            if (this.carnac.firstPlayer.id === null)
-            {
+            if (this.carnac.firstPlayer.id === null) {
                 return ""
             }
             return "RED"
@@ -89,7 +83,23 @@ const app = {
     },
 };
 
-Vue.createApp(app).mount("#app");
+let boardWidth = 0
+let boardHeight = 0
+
+fetch("http://localhost:3000/info/" + window.location.href.match(/[^\/]+$/)[0])
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+    boardWidth = data.boardWidth;
+    boardHeight = data.boardHeight;
+    document.getElementById("app").style.display = "block"
+    document.getElementById("loading").style.display = "none"
+})
+.then ( () => {
+    Vue.createApp(app).mount("#app")
+
+})
+
 
 
 

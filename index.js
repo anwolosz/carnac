@@ -26,7 +26,19 @@ app.get("/isExists/:room", (req, res) => {
 
 app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allow "/" for example.
   if (!isRoomExists(req.body.room)) {
-    rooms[req.body.room] = new Carnac(req.body.room);
+    let boardWidth = 10;
+    let boardHeight = 7;
+    if (req.body.boardSize === "8x5")
+    {
+      boardWidth = 8;
+      boardHeight = 5;
+    }
+    if (req.body.boardSize === "14x9")
+    {
+      boardWidth = 14;
+      boardHeight = 9;
+    }
+    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight);
     return res.json({ exists: false })
   }
   return res.json({ exists: true })
@@ -40,7 +52,12 @@ app.post("/test", (req, res) => {
   res.json({test: "works?"});
 });
 
-
+app.get("/info/:room", (req, res) => {
+  if (!isRoomExists(req.params.room)) {
+    return res.redirect("/");
+  }
+  return res.json({boardWidth: rooms[req.params.room].boardWidth, boardHeight: rooms[req.params.room].boardHeight})
+});
 
 app.get("/:room", (req, res) => {
   if (!isRoomExists(req.params.room)) {
