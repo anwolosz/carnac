@@ -9,182 +9,240 @@
   <link rel="stylesheet" href="carnac.css">
   <script src="/socket.io/socket.io.js"></script>
   <script src="vue.global.js"></script>
+  <link rel="stylesheet" href="bootstrap-icons-1.3.0/bootstrap-icons.css">
+  <link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap-grid.min.css">
 </head>
 
 <body>
 
 
-  <div id="loading">Loading</div>
+
+
   <div id="app">
-    <h1>{{carnac.roomName}}</h1>
-    <h2>{{playerColor()}}</h2>
-    <h2>{{carnac.winner === "OPPONENT" ? 'You lose...': (carnac.winner === "DRAW" ? 'Its a draw...' : (carnac.winner === null ? '':'You won!')) }}</h2>
-    <p>{{carnac.stoneCounter}}</>
-    <table class="board">
-      <tr v-for="(row, y) in carnac.board">
-        <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
-          :class="
-          carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : '',
-          carnac.board[y][x].partOfDolmen && carnac.board[y][x].color === 'R'  ? 'countedRed' : '',
-          carnac.board[y][x].partOfDolmen && carnac.board[y][x].color === 'W'  ? 'countedWhite' : ''">
-          <div :class="color(y,x)" class="symbol"></div>
-        </td>
-      </tr>
-    </table>
-    <button @click="mouseClickPass()">PASS</button>
-    <button @click="carnac.countDolmen()">countdolemn</button>
-    <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : ''" @click="selectStone('STONE_1')">
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell white"></td>
-        <td class="cell white"></td>
-        <td class="cell red"></td>
-        <td class="cell white"></td>
-        <td class="cell white"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-    </table>
+    <div id="waiting" v-if="carnac.gameStatus === 'WAITING'">
 
-    <table class="option" :class="carnac.selectedStone === 'STONE_2' ? 'selected' : ''" @click="selectStone('STONE_2')">
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell white"></td>
-        <td class="cell white"></td>
-        <td class="cell white"></td>
-        <td class="cell white"></td>
-        <td class="cell white"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell red"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-    </table>
+      <input id="copyInput" type="text" v-model="url" readonly>
+      <button @click="copyToClipboard()"><i class="bi bi-clipboard"></i></button>
+    </div>
 
-    <table class="option" :class="carnac.selectedStone === 'STONE_3' ? 'selected' : ''" @click="selectStone('STONE_3')">
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell red"></td>
-        <td class="cell red"></td>
-        <td class="cell white"></td>
-        <td class="cell red"></td>
-        <td class="cell red"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-    </table>
+    <div id="game" v-if="carnac.gameStatus !== 'WAITING'">
+      <h1>{{carnac.roomName}}</h1>
+      <h2>{{playerColor()}}</h2>
+      <h2>{{carnac.winner === "OPPONENT" ? 'You lose...': (carnac.winner === "DRAW" ? 'Its a draw...' : (carnac.winner
+        === null ? '':'You won!')) }}</h2>
+      <p>{{carnac.stoneCounter}}</p>
 
-    <table class="option" :class="carnac.selectedStone === 'STONE_4' ? 'selected' : ''" @click="selectStone('STONE_4')">
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell red"></td>
-        <td class="cell red"></td>
-        <td class="cell red"></td>
-        <td class="cell red"></td>
-        <td class="cell red"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-      <tr>
-        <td class="cell"></td>
-        <td class="cell"></td>
-        <td class="cell white"></td>
-        <td class="cell"></td>
-        <td class="cell"></td>
-      </tr>
-    </table>
+      <div class="container">
+        <div class="row">
+          <div class="col" style="background: blue;">AAA</div>
+        </div>
+        <div class="row">
+          <div class="col-7 boardContainer">
+            <table class="board">
+              <tr v-for="(row, y) in carnac.board">
+                <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
+                  :class="
+                    carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : '',
+                    carnac.board[y][x].partOfDolmen && carnac.board[y][x].color === 'R'  ? 'countedRed' : '',
+                    carnac.board[y][x].partOfDolmen && carnac.board[y][x].color === 'W'  ? 'countedWhite' : ''">
+                  <div class="symbolContainer">
+                    <i v-if="color(y,x) === 'red'" class="symbol bi bi-command red"></i>
+                    <i v-if="color(y,x) === 'white'" class="symbol bi bi-bullseye white"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : ''"
+                  @click="selectStone('STONE_1')">
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillWhite"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col">
+                <table class="option" :class="carnac.selectedStone === 'STONE_2' ? 'selected' : ''"
+                  @click="selectStone('STONE_2')">
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillWhite"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <table class="option" :class="carnac.selectedStone === 'STONE_3' ? 'selected' : ''"
+                  @click="selectStone('STONE_3')">
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillRed"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col">
+                <table class="option" :class="carnac.selectedStone === 'STONE_4' ? 'selected' : ''"
+                  @click="selectStone('STONE_4')">
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillRed"></td>
+                    <td class="cell fillRed"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                  <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell fillWhite"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col" style="background: orange;">
+                <button @click="mouseClickPass()">PASS</button>
+              </div>
+              <div class="col" style="background: grey;">
+                <p>{{carnac.stoneCounter}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" style="background: red;">AAA</div>
+        </div>
+      </div>
 
+      <button @click="carnac.countDolmen()">countdolemn</button>
+
+
+
+
+
+
+
+
+    </div>
 
   </div>
 

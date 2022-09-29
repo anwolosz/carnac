@@ -1,36 +1,52 @@
 var socket = io();
 
-
-
+// let url = window.location.href;
+// document.getElementById("copyInput").value = url;
 
 const app = {
     data() {
         return {
+            url: window.location.href,
             carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth)
         }
     },
     mounted() {
-        this.carnac = new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardHeight)
-        console.log("mounted");
-        socket.emit("connectRoom", this.carnac.roomName);
-        socket.on("start", (firstPlayerId, secondPlayerId) => {
-            console.log("Hello kezdünk");
-            this.carnac.gameStatus = "PLAYING"
-            this.carnac.firstPlayer.id = firstPlayerId
-            this.carnac.secondPlayer.id = secondPlayerId
-            this.carnac.activePlayer.id = firstPlayerId;
-            this.carnac.activePlayer.status = "PLACE_STONE"
-        });
-        socket.on("opponentMove", (y, x, stone) => {
-            let selection = this.carnac.selectedStone
-            this.carnac.move(y, x, stone, "OPPONENT");
-            this.carnac.selectedStone = selection
-        });
 
-        socket.on("opponentPass", (y, x, stone) => {
-            console.log("testpass");
-            this.carnac.pass("OPPONENT");
-        });
+        fetch("http://localhost:3000/info/" + window.location.href.match(/[^\/]+$/)[0])
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                boardWidth = data.boardWidth;
+                boardHeight = data.boardHeight;
+            })
+            .then(() => {
+                
+                
+                this.carnac = new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardHeight)
+                console.log("mounted");
+                socket.emit("connectRoom", this.carnac.roomName);
+                socket.on("start", (firstPlayerId, secondPlayerId) => {
+                    console.log("Hello kezdünk");
+                    // document.getElementById("game").style.display = "block"
+                    // document.getElementById("waiting").style.display = "none"
+                    this.carnac.gameStatus = "PLAYING"
+                    this.carnac.firstPlayer.id = firstPlayerId
+                    this.carnac.secondPlayer.id = secondPlayerId
+                    this.carnac.activePlayer.id = firstPlayerId;
+                    this.carnac.activePlayer.status = "PLACE_STONE"
+                });
+                socket.on("opponentMove", (y, x, stone) => {
+                    let selection = this.carnac.selectedStone
+                    this.carnac.move(y, x, stone, "OPPONENT");
+                    this.carnac.selectedStone = selection
+                });
+
+                socket.on("opponentPass", (y, x, stone) => {
+                    console.log("testpass");
+                    this.carnac.pass("OPPONENT");
+                });
+            })
+
 
     },
     methods: {
@@ -79,6 +95,10 @@ const app = {
                 return ""
             }
             return "RED"
+        },
+        copyToClipboard()
+        {
+            navigator.clipboard.writeText(this.url);
         }
     },
 };
@@ -86,19 +106,9 @@ const app = {
 let boardWidth = 0
 let boardHeight = 0
 
-fetch("http://localhost:3000/info/" + window.location.href.match(/[^\/]+$/)[0])
-.then(response => response.json())
-.then(data => {
-    console.log(data);
-    boardWidth = data.boardWidth;
-    boardHeight = data.boardHeight;
-    document.getElementById("app").style.display = "block"
-    document.getElementById("loading").style.display = "none"
-})
-.then ( () => {
-    Vue.createApp(app).mount("#app")
+Vue.createApp(app).mount("#app")
 
-})
+
 
 
 
