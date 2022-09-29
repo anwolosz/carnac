@@ -6,6 +6,7 @@ var socket = io();
 const app = {
     data() {
         return {
+            userId: null,
             url: window.location.href,
             carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth)
         }
@@ -99,6 +100,10 @@ const app = {
         copyToClipboard()
         {
             navigator.clipboard.writeText(this.url);
+        },
+        isActivePlayer()
+        {
+            return this.carnac.activePlayer.id === socket.id;
         }
     },
 };

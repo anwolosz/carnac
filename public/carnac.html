@@ -27,14 +27,16 @@
 
     <div id="game" v-if="carnac.gameStatus !== 'WAITING'">
       <h1>{{carnac.roomName}}</h1>
-      <h2>{{playerColor()}}</h2>
       <h2>{{carnac.winner === "OPPONENT" ? 'You lose...': (carnac.winner === "DRAW" ? 'Its a draw...' : (carnac.winner
         === null ? '':'You won!')) }}</h2>
-      <p>{{carnac.stoneCounter}}</p>
-
       <div class="container">
         <div class="row">
-          <div class="col" style="background: blue;">AAA</div>
+          <div class="col about">
+            <p><i class="symbol bi" :class="playerColor() === 'RED' ? 'bi-command red' : 'bi-bullseye white'"></i> You</p>
+            <p class="info">
+              <i>{{isActivePlayer() ? 'Your turn.' : 'Waiting for opponent.'}}</i>
+            </p>
+          </div>
         </div>
         <div class="row">
           <div class="col-7 boardContainer">
@@ -222,24 +224,18 @@
               <div class="col" style="background: orange;">
                 <button @click="mouseClickPass()">PASS</button>
               </div>
-              <div class="col" style="background: grey;">
-                <p>{{carnac.stoneCounter}}</p>
+              <div class="col">
+                <p>Number of stones left: {{carnac.stoneCounter}}</p>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col" style="background: red;">AAA</div>
+          <div class="col about">
+            <p><i class="symbol bi" :class="playerColor() === 'WHITE' ? 'bi-command red' : 'bi-bullseye white'"></i> Opponent</p>
+          </div>
         </div>
       </div>
-
-      <button @click="carnac.countDolmen()">countdolemn</button>
-
-
-
-
-
-
 
 
     </div>

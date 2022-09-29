@@ -3,6 +3,24 @@ html {
     background-attachment: fixed;
 }
 
+.about {
+    font-size: 25px;
+    padding: 0px;
+    border-radius: 15px;
+    background: rgba(189, 207, 88, 0.1);
+    margin-bottom: 15px;
+}
+
+.about .symbol {
+    font-size: 35px;
+    background: rgba(0,0,0,0. 2)
+}
+
+.info {
+    font-size: 16px;
+}
+
+
 .boardContainer {
     display: flex;
     align-items: center;
