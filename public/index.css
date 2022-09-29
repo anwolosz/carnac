@@ -52,8 +52,7 @@ p {
 
 .content {
     padding: 0 18px;
-    max-height: 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
     transition: max-height 0.2s ease-out;
 }
 
@@ -76,7 +75,6 @@ p {
     padding: 35px;
     border-radius: 15px;
     margin: auto;
-    width: 33%;
     background-color: rgba(189, 207, 88, 0.1);
     margin-bottom: 15px;
 }

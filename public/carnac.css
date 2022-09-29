@@ -30,7 +30,7 @@ body {
 }
 
 .board, .option {
-    transition-duration: 0.5s;
+    transition-duration: 0.2s;
     user-select: none;
     border: 2px solid black;
     border-collapse: collapse;
@@ -48,7 +48,15 @@ body {
     user-select: none;
     border: 2px solid black;
     border-collapse: collapse;
+    
+}
+
+.notFrozen {
     background: rgba(0,0,0,0.2);
+}
+
+.frozen {
+    background: rgba(197, 197, 197, 0.4);
 }
 
 .selected {
@@ -61,6 +69,7 @@ body {
     width: 35px;
     height: 35px;
     min-width: 35px;
+    padding: 0px;
     text-align: center;
 }
 
@@ -136,6 +145,7 @@ button {
     border: none;
     border-radius: 15px;
     box-shadow: 0 9px rgb(255, 138, 59);
+    transition-duration: 0.5s;
 }
 
 button:hover {
@@ -146,4 +156,13 @@ button:active {
     background-color: #ee5f00;
     box-shadow: 0 5px rgb(255, 151, 82);
     transform: translateY(4px);
+}
+
+button:disabled,
+button[disabled]{
+    background-color: #e6e6e6;
+    box-shadow: 0 5px rgb(250, 250, 250);
+    transform: translateY(4px);
+    transition-duration: 0.5s;
+
 }

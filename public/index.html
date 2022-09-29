@@ -9,38 +9,85 @@
   <script src="vue.global.js"></script>
   <link rel="stylesheet" href="bootstrap-icons-1.3.0/bootstrap-icons.css">
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap-grid.min.css">
 </head>
 
 <body>
-  <h1>Carnac</h1>
   <div id="app">
-    <div class="createSection">
-      <div class="content-x">
-        <form class="settings">
-          <label>Room name:</label>
-          <input type="text" v-model="createRoomName" placeholder="Room name" size="10">
-          <hr>
-          <i class="bi bi-aspect-ratio settingIcon"></i>
-          <div @click="selectBoardSize('8x5') " :class="boardSize === '8x5' ? 'selected' : ''" class="boardSizeIcon bI-small">8×5</div>
-          <div @click="selectBoardSize('10x7')" :class="boardSize === '10x7' ? 'selected' : ''" class="boardSizeIcon bI-medium">10×7</div>
-          <div @click="selectBoardSize('14x9')" :class="boardSize === '14x9' ? 'selected' : ''" class="boardSizeIcon bI-large">14×9</div>
-          <hr>
-
-          <i class="bi bi-hourglass-split settingIcon"></i>
-          <input type="number" class="timeInput" size="1" min="1" max="60"> <label>minutes</label>
-          <hr>
-
-          <i class="bi bi-person-bounding-box settingIcon"></i>
-          <div @click="selectColor('RED')   " :class="creatorColor === 'RED' ? 'selected' : ''" class="firstPlayerIcon"><i class="bi bi-command red"></i></div>
-          <div @click="selectColor('RANDOM')" :class="creatorColor === 'RANDOM' ? 'selected' : ''" class="firstPlayerIcon"><i class="bi bi-dice-5 orange"></i></div>
-          <div @click="selectColor('WHITE') " :class="creatorColor === 'WHITE' ? 'selected' : ''" class="firstPlayerIcon"><i class="bi bi-bullseye white"></i></div>
-
-
-        </form>
+    <div class="row">
+      <div class="col">
+        <h1>Carnac</h1>
       </div>
-      <i class="bi bi-gear-fill settingsButton collapsible"></i>
-      <button :disabled="isEmptyString(createRoomName)" @click="createRoom()">Create room!</button>
     </div>
+    <div class="row d-flex justify-content-center">
+      <div class="col-sm-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="content">
+          <form class="settings">
+            <div class="row">
+              <div class="col">
+                <label>Room name:</label>
+              </div>
+              <div class="col">
+                <input type="text" v-model="createRoomName" placeholder="Room name" size="10">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col">
+                <i class="bi bi-aspect-ratio settingIcon"></i>
+              </div>
+              <div class="col">
+                <div @click="selectBoardSize('8x5') " :class="boardSize === '8x5' ? 'selected' : ''"
+                  class="boardSizeIcon bI-small">8×5</div>
+                <div @click="selectBoardSize('10x7')" :class="boardSize === '10x7' ? 'selected' : ''"
+                  class="boardSizeIcon bI-medium">10×7</div>
+                <div @click="selectBoardSize('14x9')" :class="boardSize === '14x9' ? 'selected' : ''"
+                  class="boardSizeIcon bI-large">14×9</div>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <div class="col">
+                <i class="bi bi-hourglass-split settingIcon"></i>
+              </div>
+              <div class="col">
+                <input type="number" class="timeInput" size="1" min="1" max="60" value="10"> <label>minutes</label>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <div class="col ">
+                <i class="bi bi-person-bounding-box settingIcon"></i>
+              </div>
+              <div class="col">
+                <div @click="selectColor('RED')   " :class="creatorColor === 'RED' ? 'selected' : ''"
+                  class="firstPlayerIcon"><i class="bi bi-command red"></i></div>
+                <div @click="selectColor('RANDOM')" :class="creatorColor === 'RANDOM' ? 'selected' : ''"
+                  class="firstPlayerIcon"><i class="bi bi-dice-5 orange"></i></div>
+                <div @click="selectColor('WHITE') " :class="creatorColor === 'WHITE' ? 'selected' : ''"
+                  class="firstPlayerIcon"><i class="bi bi-bullseye white"></i></div>
+
+              </div>
+            </div>
+
+
+
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><i class="bi bi-gear-fill settingsButton collapsible"></i>
+        <button :disabled="isEmptyString(createRoomName)" @click="createRoom()">Create room!</button>
+      </div>
+    </div>
+
     <p>or</p>
     <div class="joinSection">
       <input type="text" v-model="joinRoomName" class="joinInput" size="10">
