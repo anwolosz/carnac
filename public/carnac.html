@@ -27,22 +27,21 @@
 
     <div id="game" v-if="carnac.gameStatus !== 'WAITING'">
       <h1>{{carnac.roomName}}</h1>
-      <h2>{{carnac.winner === "OPPONENT" ? 'You lose...': (carnac.winner === "DRAW" ? 'Its a draw...' : (carnac.winner
-        === null ? '':'You won!')) }}</h2>
       <div class="container">
         <div class="row">
           <div class="col about">
             <p><i class="symbol bi" :class="playerColor() === 'RED' ? 'bi-command red' : 'bi-bullseye white'"></i> You</p>
             <p class="info">
-              <i>{{isActivePlayer() ? 'Your turn.' : 'Waiting for opponent.'}}</i>
+              <i v-if="carnac.gameStatus === 'PLAYING'">{{isActivePlayer() ? 'Your turn.' : 'Waiting for opponent.'}}</i>
+              <i v-if="carnac.gameStatus === 'GAME_OVER'">{{carnac.winner === "OPPONENT" ? 'You lose...' : (carnac.winner === "DRAW" ? 'Its a draw...' : 'You won!')}}</i>
             </p>
           </div>
         </div>
         <div class="row">
           <div class="col-7 boardContainer">
-            <table class="board">
+            <table class="board" @mouseleave="mouseLeaveBoard()">
               <tr v-for="(row, y) in carnac.board">
-                <td @mouseover="mouseOverCell(y, x)" @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
+                <td @mouseover="mouseOverCell(y, x)"  @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
                   :class="
                     carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : '',
                     carnac.board[y][x].partOfDolmen && carnac.board[y][x].color === 'R'  ? 'countedRed' : '',
@@ -57,7 +56,7 @@
           </div>
           <div class="col">
             <div class="row">
-              <div class="col">
+              <div class="col d-flex justify-content-end">
                 <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : ''"
                   @click="selectStone('STONE_1')">
                   <tr>
@@ -139,7 +138,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col">
+              <div class="col d-flex justify-content-end">
                 <table class="option" :class="carnac.selectedStone === 'STONE_3' ? 'selected' : ''"
                   @click="selectStone('STONE_3')">
                   <tr>
@@ -221,11 +220,13 @@
               </div>
             </div>
             <div class="row">
-              <div class="col" style="background: orange;">
+              <div class="col d-flex justify-content-center">
                 <button @click="mouseClickPass()">PASS</button>
               </div>
-              <div class="col">
-                <p>Number of stones left: {{carnac.stoneCounter}}</p>
+            </div>
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <p>{{carnac.stoneCounter}} stones left</p>
               </div>
             </div>
           </div>

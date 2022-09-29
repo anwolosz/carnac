@@ -52,7 +52,6 @@ const app = {
     },
     methods: {
         mouseOverCell(y, x) {
-            //TODO: check game end
             if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE") {
                 this.carnac.placeStone(y, x);
             }
@@ -104,6 +103,12 @@ const app = {
         isActivePlayer()
         {
             return this.carnac.activePlayer.id === socket.id;
+        },
+        mouseLeaveBoard()
+        {
+            if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE") {
+                this.carnac.removeOptions();
+            }
         }
     },
 };
