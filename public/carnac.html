@@ -30,7 +30,7 @@
       <div class="container">
         <div class="row">
           <div class="col about">
-            <p><i class="symbol bi" :class="playerColor() === 'RED' ? 'bi-command red' : 'bi-bullseye white'"></i> You</p>
+            <p><i class="symbol bi" :class="playerColor() === 'RED' ? 'bi-command red' : 'bi-bullseye white'"></i> You ({{playerColor() === 'RED' ? formatTime(carnac.firstPlayer.timer) : formatTime(carnac.secondPlayer.timer)}})</p>
             <p class="info">
               <i v-if="carnac.gameStatus === 'PLAYING'">{{isActivePlayer() ? 'Your turn.' : 'Waiting for opponent.'}}</i>
               <i v-if="carnac.gameStatus === 'GAME_OVER'">{{carnac.winner === "OPPONENT" ? 'You lose...' : (carnac.winner === "DRAW" ? 'Its a draw...' : 'You won!')}}</i>
@@ -234,7 +234,7 @@
         </div>
         <div class="row">
           <div class="col about">
-            <p><i class="symbol bi" :class="playerColor() === 'WHITE' ? 'bi-command red' : 'bi-bullseye white'"></i> Opponent</p>
+            <p><i class="symbol bi" :class="playerColor() === 'WHITE' ? 'bi-command red' : 'bi-bullseye white'"></i> Opponent ({{playerColor() !== 'RED' ? formatTime(carnac.firstPlayer.timer) : formatTime(carnac.secondPlayer.timer)}})</p>
           </div>
         </div>
       </div>

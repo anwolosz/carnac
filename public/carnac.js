@@ -2,6 +2,7 @@ class Player {
     constructor() {
         this.id = null
         this.status = null
+        this.timer = 20
     }
 }
 
@@ -36,6 +37,36 @@ class Carnac {
             }
         }
     }
+
+    countDown() {
+        var startedAt = Date.now();
+        var counter = setInterval(() => {
+          if (this.activePlayer.id === this.firstPlayer.id) {
+            this.firstPlayer.timer =
+            this.firstPlayer.timer - (Date.now() - startedAt) /1000;
+          } else {
+            this.secondPlayer.timer =
+            this.secondPlayer.timer -(Date.now() - startedAt) / 1000;
+          }
+    
+          if (this.firstPlayer.timer <= 0) {
+            this.firstPlayer.timer = 0;
+            this.winner = this.secondPlayer.id;
+            this.gameStatus = "GAME_OVER"
+            clearInterval(counter);
+          }
+          if (this.secondPlayer.timer <= 0) {
+            this.secondPlayer.timer = 0;
+            this.winner = this.firstPlayer.id;
+            this.gameStatus = "GAME_OVER"
+            clearInterval(counter);
+          }
+          if (this.winner !== null) {
+            clearInterval(counter);
+          }
+          startedAt = Date.now()
+        }, 100);
+      }
 
     countEmptyCells() {
         let counter = 0;

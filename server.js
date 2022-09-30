@@ -103,6 +103,7 @@ io.on("connection", (socket) => {
       rooms[roomName].activePlayer.id = rooms[roomName].firstPlayer.id
       rooms[roomName].activePlayer.status = "PLACE_STONE"
       rooms[roomName].gameStatus = "PLAYING"
+      rooms[roomName].countDown();
     }
 
     console.log(rooms[roomName].creatorColor);

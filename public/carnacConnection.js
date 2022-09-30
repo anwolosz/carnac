@@ -21,8 +21,8 @@ const app = {
                 boardHeight = data.boardHeight;
             })
             .then(() => {
-                
-                
+
+
                 this.carnac = new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardHeight)
                 console.log("mounted");
                 socket.emit("connectRoom", this.carnac.roomName);
@@ -35,6 +35,7 @@ const app = {
                     this.carnac.secondPlayer.id = secondPlayerId
                     this.carnac.activePlayer.id = firstPlayerId;
                     this.carnac.activePlayer.status = "PLACE_STONE"
+                    this.carnac.countDown();
                 });
                 socket.on("opponentMove", (y, x, stone) => {
                     let selection = this.carnac.selectedStone
@@ -96,20 +97,21 @@ const app = {
             }
             return "RED"
         },
-        copyToClipboard()
-        {
+        copyToClipboard() {
             navigator.clipboard.writeText(this.url);
         },
-        isActivePlayer()
-        {
+        isActivePlayer() {
             return this.carnac.activePlayer.id === socket.id;
         },
-        mouseLeaveBoard()
-        {
+        mouseLeaveBoard() {
             if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE") {
                 this.carnac.removeOptions();
             }
+        },
+        formatTime(timer) {
+            return Math.floor(timer / 60).toLocaleString('en-US', {minimumIntegerDigits: 2}) + ":" + Math.floor(timer % 60).toLocaleString('en-US', {minimumIntegerDigits: 2});
         }
+
     },
 };
 

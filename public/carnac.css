@@ -1,4 +1,5 @@
 body {
+    font-family: monospace;
     background: radial-gradient(circle, rgba(85, 92, 30, 1) 0%, rgba(53, 58, 26, 1) 85%);
     background-attachment: fixed;
     color:white;
