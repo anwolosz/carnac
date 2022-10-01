@@ -24,8 +24,10 @@
         <div class="content">
           <form class="settings">
             <div class="row">
-              <div class="col">
-                <label>Room name:</label>
+              <div class="col align-items-center d-flex justify-content-center">
+                <label>
+                  <p>Room name:</p>
+                </label>
               </div>
               <div class="col">
                 <input type="text" v-model="createRoomName" placeholder="Room name" size="10">
@@ -53,7 +55,8 @@
                 <i class="bi bi-hourglass-split settingIcon"></i>
               </div>
               <div class="col">
-                <input type="number" class="timeInput" size="1" min="1" max="60" value="10"> <label>minutes</label>
+                <input type="number" class="timeInput" size="1" min="1" max="60" value="10">
+                <label><i>minutes</i></label>
               </div>
             </div>
 
@@ -63,13 +66,28 @@
               <div class="col ">
                 <i class="bi bi-person-bounding-box settingIcon"></i>
               </div>
-              <div class="col">
-                <div @click="selectColor('RED')   " :class="creatorColor === 'RED' ? 'selected' : ''"
-                  class="firstPlayerIcon"><i class="bi bi-command red"></i></div>
-                <div @click="selectColor('RANDOM')" :class="creatorColor === 'RANDOM' ? 'selected' : ''"
-                  class="firstPlayerIcon"><i class="bi bi-dice-5 orange"></i></div>
-                <div @click="selectColor('WHITE') " :class="creatorColor === 'WHITE' ? 'selected' : ''"
-                  class="firstPlayerIcon"><i class="bi bi-bullseye white"></i></div>
+              <div class="col d-flex justify-content-center">
+                <div class="row">
+                  <div class="col">
+                    <i @click="selectColor('RED')"
+                      class="d-flex justify-content-center align-items-center firstPlayerIcon bi bi-command red"
+                      :class="creatorColor === 'RED' ? 'selected' : ''"></i>
+                  </div>
+                  <div class="col">
+                    <i @click="selectColor('RANDOM')"
+                    class="d-flex justify-content-center align-items-center firstPlayerIcon bi bi-dice-5 orange"
+                    :class="creatorColor === 'RANDOM' ? 'selected' : ''"></i>
+
+                  </div>
+                  <div class="col">
+                    <i @click="selectColor('WHITE')"
+                    class="d-flex justify-content-center align-items-center firstPlayerIcon bi bi-bullseye white"
+                    :class="creatorColor === 'WHITE' ? 'selected' : ''"></i>
+
+                  </div>
+                </div>
+
+
 
               </div>
             </div>
