@@ -26,9 +26,9 @@ app.get("/isExists/:room", (req, res) => {
 
 app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allow "/" for example.
   let existsReturn = isRoomExists(req.body.room);
-  let inTimeLimit = req.body.timeLimit >= 1 && req.body.timeLimit <=60 && Number.isInteger(req.body.timeLimit) && Number.isInteger(req.body.timeLimit);
+  let inTimeLimit = req.body.timeLimit >= 1 && req.body.timeLimit <= 60 && Number.isInteger(req.body.timeLimit) && Number.isInteger(req.body.timeLimit);
 
-  
+
   let isCorrectName = /^([a-zA-Z0-9]{3,10})$/.test(req.body.room);
 
   console.log(req.body.timeLimit);
@@ -45,15 +45,14 @@ app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allo
     }
 
     let creatorColor = req.body.creatorColor
-    if (req.body.creatorColor !== "RED" && req.body.creatorColor !== "WHITE")
-    {
+    if (req.body.creatorColor !== "RED" && req.body.creatorColor !== "WHITE") {
       creatorColor = Math.random() >= 0.5 ? "RED" : "WHITE"
     }
 
 
-    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor, req.body.timeLimit*60);
+    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor, req.body.timeLimit * 60);
   }
-  return res.json({ exists: existsReturn, inTimeLimit: inTimeLimit, isCorrectName: isCorrectName})
+  return res.json({ exists: existsReturn, inTimeLimit: inTimeLimit, isCorrectName: isCorrectName })
 });
 
 app.post("/test", (req, res) => {
@@ -68,7 +67,7 @@ app.get("/info/:room", (req, res) => {
   if (!isRoomExists(req.params.room)) {
     return res.redirect("/");
   }
-  return res.json({ boardWidth: rooms[req.params.room].boardWidth, boardHeight: rooms[req.params.room].boardHeight, timer: rooms[req.params.room].firstPlayer.timer})
+  return res.json({ boardWidth: rooms[req.params.room].boardWidth, boardHeight: rooms[req.params.room].boardHeight, timer: rooms[req.params.room].firstPlayer.timer })
 });
 
 app.get("/:room", (req, res) => {
@@ -84,34 +83,34 @@ io.on("connection", (socket) => {
 
 
   socket.on("connectRoom", (roomName) => {
-    socket.join(roomName); //TODO: check if really exists the room
-    if (rooms[roomName].isEmpty()) {
-      if (rooms[roomName].creatorColor === "RED")
-      {
-        rooms[roomName].firstPlayer.id = socket.id
-      }
-      else {
-        rooms[roomName].secondPlayer.id = socket.id
-      }
-    }
-    else if (rooms[roomName].hasFreePlayer()) {
-      if (rooms[roomName].creatorColor === "RED")
-      {
-        rooms[roomName].secondPlayer.id = socket.id
-        io.to(socket.id).emit("start", "OPPONENT", socket.id);
-        socket.broadcast.emit("start", rooms[roomName].firstPlayer.id, "OPPONENT");
-      }
-      else {
-        rooms[roomName].firstPlayer.id = socket.id
-        io.to(socket.id).emit("start", socket.id, "OPPONENT");
-        socket.broadcast.emit("start", "OPPONENT", rooms[roomName].secondPlayer.id);
-      }
-      rooms[roomName].activePlayer.id = rooms[roomName].firstPlayer.id
-      rooms[roomName].activePlayer.status = "PLACE_STONE"
-      rooms[roomName].gameStatus = "PLAYING"
-      rooms[roomName].countDown();
-    }
+    if (isRoomExists(roomName)) {
 
+      socket.join(roomName);
+      if (rooms[roomName].isEmpty()) {
+        if (rooms[roomName].creatorColor === "RED") {
+          rooms[roomName].firstPlayer.id = socket.id
+        }
+        else {
+          rooms[roomName].secondPlayer.id = socket.id
+        }
+      }
+      else if (rooms[roomName].hasFreePlayer()) {
+        if (rooms[roomName].creatorColor === "RED") {
+          rooms[roomName].secondPlayer.id = socket.id
+          io.to(socket.id).emit("start", "OPPONENT", socket.id);
+          socket.broadcast.emit("start", rooms[roomName].firstPlayer.id, "OPPONENT");
+        }
+        else {
+          rooms[roomName].firstPlayer.id = socket.id
+          io.to(socket.id).emit("start", socket.id, "OPPONENT");
+          socket.broadcast.emit("start", "OPPONENT", rooms[roomName].secondPlayer.id);
+        }
+        rooms[roomName].activePlayer.id = rooms[roomName].firstPlayer.id
+        rooms[roomName].activePlayer.status = "PLACE_STONE"
+        rooms[roomName].gameStatus = "PLAYING"
+        rooms[roomName].countDown();
+      }
+    }
     console.log(rooms[roomName].creatorColor);
     console.log(rooms);
   })

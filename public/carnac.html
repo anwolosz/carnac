@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game</title>
+  <title>Carnac</title>
   <script src="/socket.io/socket.io.js"></script>
   <script src="vue.global.js"></script>
   <link rel="stylesheet" href="bootstrap-icons-1.3.0/bootstrap-icons.css">
@@ -33,8 +33,8 @@
     </div>
 
     <div id="game" v-if="carnac.gameStatus !== 'WAITING'">
-      <h1>{{carnac.roomName}}</h1>
       <div class="container">
+        <h1 class="d-flex justify-content-end">{{carnac.roomName}}</h1>
         <div class="row">
           <div class="col about">
             <p><i class="symbol bi" :class="playerColor() === 'RED' ? 'bi-command red' : 'bi-bullseye white'"></i> You ({{playerColor() === 'RED' ? formatTime(carnac.firstPlayer.timer) : formatTime(carnac.secondPlayer.timer)}})</p>
