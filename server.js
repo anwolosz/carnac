@@ -69,7 +69,7 @@ app.get("/info/:room", (req, res) => {
 });
 
 app.get("/:room", (req, res) => {
-  if (!isRoomExists(req.params.room)) {
+  if (!isRoomExists(req.params.room) || !rooms[req.params.room].hasFreePlayer()) {
     return res.redirect("/");
   }
   console.log("hello");
