@@ -65,7 +65,7 @@
           <div class="col-6">
             <div class="row">
               <div class="col d-flex justify-content-end">
-                <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : '', carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
+                <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : '', carnac.gameStatus === 'PLAYING' &&carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
                   @click="selectStone('STONE_1')">
                   <tr>
                     <td class="cell"></td>
@@ -105,7 +105,7 @@
                 </table>
               </div>
               <div class="col">
-                <table class="option" :class="carnac.selectedStone === 'STONE_2' ? 'selected' : '', carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
+                <table class="option" :class="carnac.selectedStone === 'STONE_2' ? 'selected' : '', carnac.gameStatus === 'PLAYING' &&carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
                   @click="selectStone('STONE_2')">
                   <tr>
                     <td class="cell"></td>
@@ -147,7 +147,7 @@
             </div>
             <div class="row">
               <div class="col d-flex justify-content-end">
-                <table class="option" :class="carnac.selectedStone === 'STONE_3' ? 'selected' : '', carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
+                <table class="option" :class="carnac.selectedStone === 'STONE_3' ? 'selected' : '', carnac.gameStatus === 'PLAYING' &&carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
                   @click="selectStone('STONE_3')">
                   <tr>
                     <td class="cell"></td>
@@ -187,7 +187,7 @@
                 </table>
               </div>
               <div class="col">
-                <table class="option" :class="carnac.selectedStone === 'STONE_4' ? 'selected' : '', carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
+                <table class="option" :class="carnac.selectedStone === 'STONE_4' ? 'selected' : '', carnac.gameStatus === 'PLAYING' &&carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
                   @click="selectStone('STONE_4')">
                   <tr>
                     <td class="cell"></td>
