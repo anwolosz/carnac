@@ -4,7 +4,11 @@ const app = {
             createRoomName: (Math.random() + 1).toString(36).substring(7),
             joinRoomName: "",
             boardSize: "10x7",
-            creatorColor: "RANDOM"
+            creatorColor: "RANDOM",
+            isJoinRoomExists: true,
+            isCreateRoomExists: false,
+            inTimeLimit: true,
+            timeLimit: 10
         };
     },
     methods: {
@@ -23,16 +27,18 @@ const app = {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ room: this.createRoomName, boardSize: this.boardSize, creatorColor: this.creatorColor })
+                body: JSON.stringify({ room: this.createRoomName, boardSize: this.boardSize, creatorColor: this.creatorColor, timeLimit: this.timeLimit })
             });
 
-            const content = await rawResponse.json();
-            console.log(content);
-            if (!content.exists) {
+            const roomInfo = await rawResponse.json();
+            console.log(roomInfo);
+            if (!roomInfo.exists && roomInfo.inTimeLimit) {
                 console.log("here");
                 window.location.href = "http://localhost:3000/" + this.createRoomName;
             }
             else {
+                this.isCreateRoomExists = roomInfo.exists;
+                this.inTimeLimit = roomInfo.inTimeLimit;
                 console.log("The room is already exists");
             }
         },
@@ -45,6 +51,7 @@ const app = {
                         window.location.href = "http://localhost:3000/" + this.joinRoomName;
                     }
                     else {
+                        this.isJoinRoomExists = false;
                         console.log("The room is not exists");
                     }
                 })
@@ -58,7 +65,7 @@ const app = {
         selectColor(color)
         {
             this.creatorColor = color;
-        }
+        },
     },
 };
 
