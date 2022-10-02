@@ -110,7 +110,8 @@ input:focus {
 }
 
 .tip {
-    background: rgba(255, 115, 0, 0.7);
+    box-shadow: 0px 0px 6px orange;
+    background: rgba(255, 115, 0, 0.2);
 }
 .unplacedStone {
     background-color: rgba(0, 0, 0, 0.5);
