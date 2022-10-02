@@ -8,6 +8,7 @@ const app = {
             isJoinRoomExists: true,
             isCreateRoomExists: false,
             inTimeLimit: true,
+            isCorrectName: true,
             timeLimit: 10
         };
     },
@@ -32,13 +33,14 @@ const app = {
 
             const roomInfo = await rawResponse.json();
             console.log(roomInfo);
-            if (!roomInfo.exists && roomInfo.inTimeLimit) {
+            if (!roomInfo.exists && roomInfo.inTimeLimit && roomInfo.isCorrectName) {
                 console.log("here");
                 window.location.href = "http://localhost:3000/" + this.createRoomName;
             }
             else {
                 this.isCreateRoomExists = roomInfo.exists;
                 this.inTimeLimit = roomInfo.inTimeLimit;
+                this.isCorrectName = roomInfo.isCorrectName;
                 console.log("The room is already exists");
             }
         },

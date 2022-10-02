@@ -26,10 +26,13 @@ app.get("/isExists/:room", (req, res) => {
 
 app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allow "/" for example.
   let existsReturn = isRoomExists(req.body.room);
-  let timeReturn = req.body.timeLimit >= 1 && req.body.timeLimit <=60;
+  let inTimeLimit = req.body.timeLimit >= 1 && req.body.timeLimit <=60 && Number.isInteger(req.body.timeLimit) && Number.isInteger(req.body.timeLimit);
+
+  
+  let isCorrectName = /^([a-zA-Z0-9]{3,10})$/.test(req.body.room);
 
   console.log(req.body.timeLimit);
-  if (!existsReturn && timeReturn) {
+  if (!existsReturn && inTimeLimit && isCorrectName) {
     let boardWidth = 10;
     let boardHeight = 7;
     if (req.body.boardSize === "8x5") {
@@ -50,7 +53,7 @@ app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allo
 
     rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor);
   }
-  return res.json({ exists: existsReturn, inTimeLimit: timeReturn})
+  return res.json({ exists: existsReturn, inTimeLimit: inTimeLimit, isCorrectName: isCorrectName})
 });
 
 app.post("/test", (req, res) => {

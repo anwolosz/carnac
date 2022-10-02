@@ -26,12 +26,12 @@
             <div class="row">
               <div class="col align-items-center d-flex justify-content-center">
                 <label>
-                  <p>{{isCreateRoomExists ? 'This room exists, try another one:': 'Room name:'}}</p>
+                  <p>{{!isCorrectName ? 'Room name length between 3-10, contains only letters and numbers:' : (isCreateRoomExists ? 'This room exists, try another one:' : 'Room name:')}}</p>
                   
                 </label>
               </div>
               <div class="col">
-                <input @input="isCreateRoomExists = false" type="text" v-model="createRoomName" placeholder="Room name" size="10">
+                <input @input="isCreateRoomExists = false; isCorrectName = true" type="text" v-model="createRoomName" placeholder="Room name" size="10">
               </div>
             </div>
             <hr>
