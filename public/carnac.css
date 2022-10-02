@@ -164,6 +164,10 @@ button {
     border: none;
     border-radius: 15px;
     box-shadow: 0 9px rgb(255, 138, 59);
+    
+}
+
+.pass {
     transition-duration: 0.5s;
 }
 

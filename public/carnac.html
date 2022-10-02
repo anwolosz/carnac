@@ -229,7 +229,7 @@
             </div>
             <div class="row">
               <div class="col d-flex justify-content-center">
-                <button @click="mouseClickPass()" :disabled="(isActivePlayer() && carnac.activePlayer.status !== 'TIP_OR_PASS') || !isActivePlayer()">PASS</button>
+                <button class="pass" @click="mouseClickPass()" :disabled="(isActivePlayer() && carnac.activePlayer.status !== 'TIP_OR_PASS') || !isActivePlayer()">PASS</button>
               </div>
             </div>
             <div class="row">
