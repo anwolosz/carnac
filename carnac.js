@@ -28,7 +28,7 @@ class Carnac {
         this.secondPlayer = new Player(timer)
         this.activePlayer = new Player(timer)
         this.winner = null
-        this.stoneCounter = 5;
+        this.stoneCounter = 28;
         this.selectedStone = "STONE_1"
         for (let y = 0; y < this.boardHeight; y++) {
             this.board.push([]);
@@ -122,6 +122,8 @@ class Carnac {
             sizeOfWhiteDolmens = new Uint8Array(sizeOfWhiteDolmens);
             console.log(sizeOfRedDolmens);
             console.log(sizeOfWhiteDolmens);
+            sizeOfRedDolmens.sort().reverse()
+            sizeOfWhiteDolmens.sort().reverse()
 
             for (let i = 0; i< sizeOfRedDolmens.length; i++)
             {
