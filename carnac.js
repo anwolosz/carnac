@@ -2,7 +2,7 @@ class Player {
     constructor(timer) {
         this.id = null
         this.status = null
-        this.timer = timer*60
+        this.timer = timer
     }
 }
 
@@ -86,18 +86,24 @@ class Carnac {
         let redCounter = 0;
         let whiteCounter = 0;
         let dolmenStarterPoints = [];
+        let sizeOfRedDolmens = [];
+        let sizeOfWhiteDolmens = [];
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
                 if (this.board[y][x].color === "R" && this.board[y][x].counted === false) {
-                    if (this.countStonesInDolmen(y, x, 0, "R") >= 3) {
+                    let numberOfRedStones = this.countStonesInDolmen(y, x, 0, "R")
+                    if (numberOfRedStones >= 3) {
                         redCounter++;
                         dolmenStarterPoints.push([y, x])
+                        sizeOfRedDolmens.push(numberOfRedStones)
                     }
                 }
                 if (this.board[y][x].color === "W" && this.board[y][x].counted === false) {
-                    if (this.countStonesInDolmen(y, x, 0, "W") >= 3) {
+                    let numberOfWhiteStones = this.countStonesInDolmen(y, x, 0, "W")
+                    if (numberOfWhiteStones >= 3) {
                         whiteCounter++;
                         dolmenStarterPoints.push([y, x])
+                        sizeOfWhiteDolmens.push(numberOfWhiteStones)
                     }
                 }
             }
@@ -108,8 +114,33 @@ class Carnac {
             this.fillDolmen(y_, x_, this.board[y_][x_].color)
             console.log(dolmenStarterPoints[i]);
         }
+        
+        let largest = null;
+        if (sizeOfRedDolmens.length == sizeOfWhiteDolmens.length)
+        {
+            sizeOfRedDolmens = new Uint8Array(sizeOfRedDolmens);
+            sizeOfWhiteDolmens = new Uint8Array(sizeOfWhiteDolmens);
+            console.log(sizeOfRedDolmens);
+            console.log(sizeOfWhiteDolmens);
+
+            for (let i = 0; i< sizeOfRedDolmens.length; i++)
+            {
+                if (sizeOfRedDolmens[i] > sizeOfWhiteDolmens[i])
+                {
+                    largest = "RED"
+                    break;
+                }
+                if (sizeOfRedDolmens[i] < sizeOfWhiteDolmens[i])
+                {
+                    largest = "WHITE"
+                    break;
+                }
+            }
+
+        }
         console.log("RED:", redCounter, " WHITE:", whiteCounter);
-        return [redCounter, whiteCounter];
+        console.log(largest);
+        return [redCounter, whiteCounter, largest];
 
     }
 
@@ -142,14 +173,14 @@ class Carnac {
         if (this.stoneCounter <= 0 || this.countEmptyCells() === 0) {
             console.log("GAME END2");
             let results = this.countDolmen();
-            if (results[0] > results[1]) {
+            if (results[0] > results[1] || results[2] === "RED") {
                 this.winner = this.firstPlayer.id;
             }
-            else if (results[0] === results[1]) {
-                this.winner = "DRAW"
+            else if (results[0] < results[1] || results[2] === "WHITE") {
+                this.winner = this.secondPlayer.id
             }
             else {
-                this.winner = this.secondPlayer.id
+                this.winner = "DRAW"
             }
             this.gameStatus = "GAME_OVER"
         }

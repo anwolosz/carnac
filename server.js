@@ -51,7 +51,7 @@ app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allo
     }
 
 
-    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor, req.body.timeLimit);
+    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor, req.body.timeLimit*60);
   }
   return res.json({ exists: existsReturn, inTimeLimit: inTimeLimit, isCorrectName: isCorrectName})
 });
