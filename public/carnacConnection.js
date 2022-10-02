@@ -12,7 +12,9 @@ const app = {
         return {
             userId: null,
             url: window.location.href,
-            carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth, null, 0)
+            carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth, null, 0),
+            isLinkCopied: false
+
         }
     },
     mounted() {
@@ -103,6 +105,7 @@ const app = {
             return "RED"
         },
         copyToClipboard() {
+            this.isLinkCopied = true;
             navigator.clipboard.writeText(this.url);
         },
         isActivePlayer() {

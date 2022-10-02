@@ -25,7 +25,7 @@
           <div id="waiting" v-if="carnac.gameStatus === 'WAITING'">
             <p class="info">To invite someone to play, give this URL:</p>
             <input id="copyInput" type="text" v-model="url" readonly>
-            <button @click="copyToClipboard()"><i class="bi bi-clipboard"></i></button>
+            <button @click="copyToClipboard()"><i class="bi" :class="!isLinkCopied ? 'bi-clipboard' : 'bi-clipboard-check'"></i></button>
             <p class="info">The first person to come to this URL will play with you.</p>
           </div>
         </div>
