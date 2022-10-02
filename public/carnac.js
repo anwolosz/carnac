@@ -1,8 +1,8 @@
 class Player {
-    constructor() {
+    constructor(timer) {
         this.id = null
         this.status = null
-        this.timer = 20
+        this.timer = timer
     }
 }
 
@@ -17,16 +17,16 @@ class Cell {
 }
 
 class Carnac {
-    constructor(roomName, boardWidth, boardHeight, creatorColor) {
+    constructor(roomName, boardWidth, boardHeight, creatorColor, timer) {
         this.creatorColor = creatorColor
         this.gameStatus = "WAITING"
         this.roomName = roomName
         this.board = []
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
-        this.firstPlayer = new Player()
-        this.secondPlayer = new Player()
-        this.activePlayer = new Player()
+        this.firstPlayer = new Player(timer)
+        this.secondPlayer = new Player(timer)
+        this.activePlayer = new Player(timer)
         this.winner = null
         this.stoneCounter = 5;
         this.selectedStone = "STONE_1"

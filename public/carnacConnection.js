@@ -3,12 +3,16 @@ var socket = io();
 // let url = window.location.href;
 // document.getElementById("copyInput").value = url;
 
+let boardWidth = 0
+let boardHeight = 0
+let timer = 0;
+
 const app = {
     data() {
         return {
             userId: null,
             url: window.location.href,
-            carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth)
+            carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth, null, 0)
         }
     },
     mounted() {
@@ -19,11 +23,12 @@ const app = {
                 console.log(data);
                 boardWidth = data.boardWidth;
                 boardHeight = data.boardHeight;
+                timer = data.timer;
             })
             .then(() => {
 
 
-                this.carnac = new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardHeight)
+                this.carnac = new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardHeight, null, timer)
                 console.log("mounted");
                 socket.emit("connectRoom", this.carnac.roomName);
                 socket.on("start", (firstPlayerId, secondPlayerId) => {
@@ -115,8 +120,7 @@ const app = {
     },
 };
 
-let boardWidth = 0
-let boardHeight = 0
+
 
 Vue.createApp(app).mount("#app")
 

@@ -51,7 +51,7 @@ app.post("/createRoom", (req, res) => { //TODO: check room name rules. dont allo
     }
 
 
-    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor);
+    rooms[req.body.room] = new Carnac(req.body.room, boardWidth, boardHeight, creatorColor, req.body.timeLimit);
   }
   return res.json({ exists: existsReturn, inTimeLimit: inTimeLimit, isCorrectName: isCorrectName})
 });
@@ -68,7 +68,7 @@ app.get("/info/:room", (req, res) => {
   if (!isRoomExists(req.params.room)) {
     return res.redirect("/");
   }
-  return res.json({ boardWidth: rooms[req.params.room].boardWidth, boardHeight: rooms[req.params.room].boardHeight })
+  return res.json({ boardWidth: rooms[req.params.room].boardWidth, boardHeight: rooms[req.params.room].boardHeight, timer: rooms[req.params.room].firstPlayer.timer})
 });
 
 app.get("/:room", (req, res) => {
