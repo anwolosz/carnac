@@ -1,3 +1,6 @@
+//let url = "http://warnac.herokuapp.com"
+let url = "http://localhost:3000"
+
 var socket = io();
 
 // let url = window.location.href;
@@ -11,7 +14,7 @@ const app = {
     data() {
         return {
             userId: null,
-            url: window.location.href,
+            currentUrl: window.location.href,
             carnac: new Carnac(window.location.href.match(/[^\/]+$/)[0], boardWidth, boardWidth, null, 0),
             isLinkCopied: false
 
@@ -19,7 +22,7 @@ const app = {
     },
     mounted() {
 
-        fetch("http://warnac.herokuapp.com/info/" + window.location.href.match(/[^\/]+$/)[0])
+        fetch(url + "/info/" + window.location.href.match(/[^\/]+$/)[0])
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -106,7 +109,7 @@ const app = {
         },
         copyToClipboard() {
             this.isLinkCopied = true;
-            navigator.clipboard.writeText(this.url);
+            navigator.clipboard.writeText(this.currentUrl);
         },
         isActivePlayer() {
             return this.carnac.activePlayer.id === socket.id;

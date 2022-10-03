@@ -24,7 +24,7 @@
         <div class="col-6 about">
           <div id="waiting" v-if="carnac.gameStatus === 'WAITING'">
             <p class="info">To invite someone to play, give this URL:</p>
-            <input id="copyInput" type="text" v-model="url" readonly>
+            <input id="copyInput" type="text" v-model="currentUrl" size="30" readonly>
             <!-- Copy to clipboard only works with secure connection! -->
             <!-- <button @click="copyToClipboard()"><i class="bi" :class="!isLinkCopied ? 'bi-clipboard' : 'bi-clipboard-check'"></i></button> -->
             <p class="info">The first person to come to this URL will play with you.</p>
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-6 boardContainer">
+          <div class="col-7 boardContainer">
             <table class="board" @mouseleave="mouseLeaveBoard()">
               <tr v-for="(row, y) in carnac.board">
                 <td @mouseover="mouseOverCell(y, x)"  @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
@@ -63,7 +63,7 @@
               </tr>
             </table>
           </div>
-          <div class="col-6">
+          <div class="col-5">
             <div class="row">
               <div class="col d-flex justify-content-end">
                 <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : '', carnac.gameStatus === 'PLAYING' &&carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"

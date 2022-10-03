@@ -1,3 +1,6 @@
+//let url = "http://warnac.herokuapp.com"
+let url = "http://localhost:3000"
+
 const app = {
     data() {
         return {
@@ -21,8 +24,8 @@ const app = {
             return name === "";
         },
         async createRoom() {
-            console.log("http://warnac.herokuapp.com/createRoom/" + this.createRoomName);
-            const rawResponse = await fetch("http://warnac.herokuapp.com/createRoom/", {
+            console.log(url + "/createRoom/" + this.createRoomName);
+            const rawResponse = await fetch(url + "/createRoom/", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -35,7 +38,7 @@ const app = {
             console.log(roomInfo);
             if (!roomInfo.exists && roomInfo.inTimeLimit && roomInfo.isCorrectName) {
                 console.log("here");
-                window.location.href = "http://warnac.herokuapp.com/" + this.createRoomName;
+                window.location.href = url + "/" + this.createRoomName;
             }
             else {
                 this.isCreateRoomExists = roomInfo.exists;
@@ -45,12 +48,12 @@ const app = {
             }
         },
         joinRoom() {
-            console.log("http://warnac.herokuapp.com/isExists/" + this.joinRoomName);
-            fetch("http://warnac.herokuapp.com/isExists/" + this.joinRoomName)
+            console.log(url + "/isExists/" + this.joinRoomName);
+            fetch(url + "/isExists/" + this.joinRoomName)
                 .then(response => response.json())
                 .then(data => {
                     if (data.exists) {
-                        window.location.href = "http://warnac.herokuapp.com/" + this.joinRoomName;
+                        window.location.href = url + "/" + this.joinRoomName;
                     }
                     else {
                         this.isJoinRoomExists = false;
