@@ -19,7 +19,7 @@ const app = {
     },
     mounted() {
 
-        fetch("http://localhost:3000/info/" + window.location.href.match(/[^\/]+$/)[0])
+        fetch("http://warnac.herokuapp.com/info/" + window.location.href.match(/[^\/]+$/)[0])
             .then(response => response.json())
             .then(data => {
                 console.log(data);
