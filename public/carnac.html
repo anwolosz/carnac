@@ -52,7 +52,7 @@
                 <td @mouseover="mouseOverCell(y, x)"  @click="mouseClickCell(y, x)" class="cell" v-for="(cell, x) in row"
                   :class="
                     carnac.board[y][x].type === 'SHADOW' && isActivePlayer() && carnac.activePlayer.status === 'TIP_OR_PASS' ? 'tip' : '',
-                    carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : '',
+                    carnac.board[y][x].type === 'PLACED' ? 'unplacedStone' : '', carnac.board[y][x].type === 'FIXED' ? 'placedStone' : '', carnac.board[y][x].type === 'CURSOR' ? 'cursor' : '',
                     carnac.board[y][x].partOfDolmen && carnac.board[y][x].color === 'R'  ? 'countedRed' : '',
                     carnac.board[y][x].partOfDolmen && carnac.board[y][x].color === 'W'  ? 'countedWhite' : ''">
                   <div class="symbolContainer">

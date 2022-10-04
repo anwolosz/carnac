@@ -22,8 +22,8 @@ class Carnac {
         this.gameStatus = "WAITING"
         this.roomName = roomName
         this.board = []
-        this.boardWidth = 5;
-        this.boardHeight = 5;
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
         this.firstPlayer = new Player(timer)
         this.secondPlayer = new Player(timer)
         this.activePlayer = new Player(timer)

@@ -121,6 +121,10 @@ input:focus {
     background-color: black;
 }
 
+.cursor {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
 .white {
     color: whitesmoke;
 }

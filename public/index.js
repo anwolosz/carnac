@@ -1,5 +1,5 @@
-//let url = "http://warnac.herokuapp.com"
-let url = "http://localhost:3000"
+let url = "http://warnac.herokuapp.com"
+//let url = "http://localhost:3000"
 
 const app = {
     data() {

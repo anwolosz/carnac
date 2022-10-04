@@ -1,7 +1,7 @@
 class Player {
     constructor(timer) {
         this.id = null
-        this.status = null
+        this.status = null // PLACE_STONE / TIP_OR_PASS / PASS_OR_PLACE
         this.timer = timer
     }
 }
@@ -22,8 +22,8 @@ class Carnac {
         this.gameStatus = "WAITING"
         this.roomName = roomName
         this.board = []
-        this.boardWidth = 5;
-        this.boardHeight = 5;
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
         this.firstPlayer = new Player(timer)
         this.secondPlayer = new Player(timer)
         this.activePlayer = new Player(timer)
@@ -311,7 +311,8 @@ class Carnac {
         return (
             (this.activePlayer.status === "PLACE_STONE" || this.activePlayer.status === "PASS_OR_PLACE") &&
             !this.isOutOfBounds(y, x) &&
-            this.board[y][x].type !== "FIXED"
+            this.board[y][x].type !== "FIXED" &&
+            this.board[y][x].type !== "PLACED"
         );
     }
 
@@ -380,7 +381,7 @@ class Carnac {
             this.board[y][x].color = "R";
         }
 
-        if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1].type != "FIXED" && this.board[y][x - 2].type != "FIXED") {
+        if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1].type != "FIXED" && this.board[y][x - 2].type != "FIXED" && this.board[y][x - 1].type != "PLACED" && this.board[y][x - 2].type != "PLACED") {
             this.board[y][x - 1].color = horizontalSymbol
             this.board[y][x - 1].direction = "W"
             this.board[y][x - 1].type = "SHADOW"
@@ -390,7 +391,7 @@ class Carnac {
             this.board[y][x - 2].type = "SHADOW"
 
         }
-        if (x + 1 < this.boardWidth && x + 2 < this.boardWidth && this.board[y][x + 1].type != "FIXED" && this.board[y][x + 2].type != "FIXED") {
+        if (x + 1 < this.boardWidth && x + 2 < this.boardWidth && this.board[y][x + 1].type != "FIXED" && this.board[y][x + 2].type != "FIXED" && this.board[y][x + 1].type != "PLACED" && this.board[y][x + 2].type != "PLACED") {
             this.board[y][x + 1].color = horizontalSymbol
             this.board[y][x + 1].direction = "E"
             this.board[y][x + 1].type = "SHADOW"
@@ -400,7 +401,7 @@ class Carnac {
             this.board[y][x + 2].type = "SHADOW"
 
         }
-        if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x].type != "FIXED" && this.board[y - 2][x].type != "FIXED") {
+        if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x].type != "FIXED" && this.board[y - 2][x].type != "FIXED" && this.board[y - 1][x].type != "PLACED" && this.board[y - 2][x].type != "PLACED") {
             this.board[y - 1][x].color = verticalSymbol
             this.board[y - 1][x].direction = "N"
             this.board[y - 1][x].type = "SHADOW"
@@ -410,7 +411,7 @@ class Carnac {
             this.board[y - 2][x].type = "SHADOW"
 
         }
-        if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x].type != "FIXED" && this.board[y + 2][x].type != "FIXED") {
+        if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x].type != "FIXED" && this.board[y + 2][x].type != "FIXED" && this.board[y + 1][x].type != "PLACED" && this.board[y + 2][x].type != "PLACED") {
             this.board[y + 1][x].color = verticalSymbol
             this.board[y + 1][x].direction = "S"
             this.board[y + 1][x].type = "SHADOW"
