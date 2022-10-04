@@ -1,7 +1,7 @@
 class Player {
     constructor(timer) {
         this.id = null
-        this.status = null
+        this.status = null // PLACE_STONE / TIP_OR_PASS / PASS_OR_PLACE
         this.timer = timer
     }
 }
@@ -228,6 +228,7 @@ class Carnac {
                     }
                 }
             }
+            
             this.removeOptions();
             this.checkWin();
             this.activePlayer.status = "PLACE_STONE";
@@ -238,6 +239,14 @@ class Carnac {
             this.selectedStone = stone;
             console.log("Move is legal!");
             console.log("Active player: ", this.activePlayer.id);
+            for (let y = 0; y < this.boardHeight; y++) {
+                for (let x = 0; x < this.boardWidth; x++) {
+                    if (this.board[y][x].type === "PLACED") {
+                        this.board[y][x].type = "FIXED";
+                        break;
+                    }
+                }
+            }
             this.placeStone(y, x, false);
             console.log(this.board);
             //   this.lastMove = [y, x];
@@ -248,6 +257,7 @@ class Carnac {
             //   }
             //   console.log(this.board[0]);
             //   this.noteMove(x, y);
+            
             this.switchPlayer();
             if (this.countShadows() !== 0)
             {
@@ -301,7 +311,8 @@ class Carnac {
         return (
             (this.activePlayer.status === "PLACE_STONE" || this.activePlayer.status === "PASS_OR_PLACE") &&
             !this.isOutOfBounds(y, x) &&
-            this.board[y][x].type !== "FIXED"
+            this.board[y][x].type !== "FIXED" &&
+            this.board[y][x].type !== "PLACED"
         );
     }
 
@@ -370,7 +381,7 @@ class Carnac {
             this.board[y][x].color = "R";
         }
 
-        if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1].type != "FIXED" && this.board[y][x - 2].type != "FIXED") {
+        if (x - 1 >= 0 && x - 2 >= 0 && this.board[y][x - 1].type != "FIXED" && this.board[y][x - 2].type != "FIXED" && this.board[y][x - 1].type != "PLACED" && this.board[y][x - 2].type != "PLACED") {
             this.board[y][x - 1].color = horizontalSymbol
             this.board[y][x - 1].direction = "W"
             this.board[y][x - 1].type = "SHADOW"
@@ -380,7 +391,7 @@ class Carnac {
             this.board[y][x - 2].type = "SHADOW"
 
         }
-        if (x + 1 < this.boardWidth && x + 2 < this.boardWidth && this.board[y][x + 1].type != "FIXED" && this.board[y][x + 2].type != "FIXED") {
+        if (x + 1 < this.boardWidth && x + 2 < this.boardWidth && this.board[y][x + 1].type != "FIXED" && this.board[y][x + 2].type != "FIXED" && this.board[y][x + 1].type != "PLACED" && this.board[y][x + 2].type != "PLACED") {
             this.board[y][x + 1].color = horizontalSymbol
             this.board[y][x + 1].direction = "E"
             this.board[y][x + 1].type = "SHADOW"
@@ -390,7 +401,7 @@ class Carnac {
             this.board[y][x + 2].type = "SHADOW"
 
         }
-        if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x].type != "FIXED" && this.board[y - 2][x].type != "FIXED") {
+        if (y - 1 >= 0 && y - 2 >= 0 && this.board[y - 1][x].type != "FIXED" && this.board[y - 2][x].type != "FIXED" && this.board[y - 1][x].type != "PLACED" && this.board[y - 2][x].type != "PLACED") {
             this.board[y - 1][x].color = verticalSymbol
             this.board[y - 1][x].direction = "N"
             this.board[y - 1][x].type = "SHADOW"
@@ -400,7 +411,7 @@ class Carnac {
             this.board[y - 2][x].type = "SHADOW"
 
         }
-        if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x].type != "FIXED" && this.board[y + 2][x].type != "FIXED") {
+        if (y + 1 < this.boardHeight && y + 2 < this.boardHeight && this.board[y + 1][x].type != "FIXED" && this.board[y + 2][x].type != "FIXED" && this.board[y + 1][x].type != "PLACED" && this.board[y + 2][x].type != "PLACED") {
             this.board[y + 1][x].color = verticalSymbol
             this.board[y + 1][x].direction = "S"
             this.board[y + 1][x].type = "SHADOW"
