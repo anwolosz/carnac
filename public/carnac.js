@@ -9,7 +9,7 @@ class Player {
 class Cell {
     constructor() {
         this.color = null // W / R 
-        this.type = null // FIXED / PLACED / SHADOW
+        this.type = null // FIXED / PLACED / SHADOW / CURSOR
         this.direction = null // W / E / N / S
         this.counted = false;
         this.partOfDolmen = false;
@@ -22,8 +22,8 @@ class Carnac {
         this.gameStatus = "WAITING"
         this.roomName = roomName
         this.board = []
-        this.boardWidth = boardWidth;
-        this.boardHeight = boardHeight;
+        this.boardWidth = 5;
+        this.boardHeight = 5;
         this.firstPlayer = new Player(timer)
         this.secondPlayer = new Player(timer)
         this.activePlayer = new Player(timer)
@@ -238,7 +238,7 @@ class Carnac {
             this.selectedStone = stone;
             console.log("Move is legal!");
             console.log("Active player: ", this.activePlayer.id);
-            this.placeStone(y, x);
+            this.placeStone(y, x, false);
             console.log(this.board);
             //   this.lastMove = [y, x];
             //   if (this.isWin(x, y)) {
@@ -249,6 +249,13 @@ class Carnac {
             //   console.log(this.board[0]);
             //   this.noteMove(x, y);
             this.switchPlayer();
+            if (this.countShadows() !== 0)
+            {
+                this.activePlayer.status = "TIP_OR_PASS"
+            }
+            else {
+                this.activePlayer.status = "PASS_OR_PLACE"
+            }
             console.log("Next player: ", this.activePlayer.id);
             this.stoneCounter--;
             return true;
@@ -267,7 +274,6 @@ class Carnac {
         } else {
             this.activePlayer.id = this.firstPlayer.id;
         }
-        this.activePlayer.status = "TIP_OR_PASS"
     }
 
     isLegalAction(player) {
@@ -279,7 +285,7 @@ class Carnac {
 
     isLegalPass() {
         return (
-            this.activePlayer.status === "TIP_OR_PASS"
+            this.activePlayer.status === "TIP_OR_PASS" || this.activePlayer.status === "PASS_OR_PLACE"
         )
     }
 
@@ -293,7 +299,7 @@ class Carnac {
 
     isLegalPlace(y, x) {
         return (
-            this.activePlayer.status === "PLACE_STONE" &&
+            (this.activePlayer.status === "PLACE_STONE" || this.activePlayer.status === "PASS_OR_PLACE") &&
             !this.isOutOfBounds(y, x) &&
             this.board[y][x].type !== "FIXED"
         );
@@ -313,12 +319,22 @@ class Carnac {
         return this.firstPlayer.id === null || this.secondPlayer.id === null;
     }
 
-
+    countShadows() {
+        let counter = 0;
+        for (let y = 0; y < this.boardHeight; y++) {
+            for (let x = 0; x < this.boardWidth; x++) {
+                if (this.board[y][x].type === "SHADOW") {
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
 
     removeOptions() {
         for (let y = 0; y < this.boardHeight; y++) {
             for (let x = 0; x < this.boardWidth; x++) {
-                if (this.board[y][x].type === "SHADOW" || this.board[y][x].type === "PLACED") {
+                if (this.board[y][x].type === "SHADOW" || (this.board[y][x].type === "PLACED" && this.activePlayer.status !== "PASS_OR_PLACE") || this.board[y][x].type === "CURSOR") {
                     this.board[y][x] = new Cell();
                 }
             }
@@ -326,12 +342,12 @@ class Carnac {
     }
 
 
-    placeStone(y, x) {
+    placeStone(y, x, isCursor) {
 
 
         this.removeOptions()
 
-        if (this.board[y][x].type === "FIXED" || this.winner !== null) {
+        if (this.board[y][x].type === "FIXED" ||this.board[y][x].type === "PLACED" || this.winner !== null) {
             return
         }
 
@@ -342,8 +358,11 @@ class Carnac {
             verticalSymbol = "R";
         }
 
-        if (this.board[y][x].type !== "FIXED") {
+        if (!isCursor) {
             this.board[y][x].type = "PLACED";
+        }
+        else {
+            this.board[y][x].type = "CURSOR";
         }
 
         this.board[y][x].color = "W";

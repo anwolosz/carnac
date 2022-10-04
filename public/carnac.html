@@ -66,7 +66,7 @@
           <div class="col-5">
             <div class="row">
               <div class="col d-flex justify-content-end">
-                <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : '', carnac.gameStatus === 'PLAYING' &&carnac.activePlayer.status === 'PLACE_STONE' && isActivePlayer() ? 'notFrozen':'frozen'"
+                <table class="option" :class="carnac.selectedStone === 'STONE_1' ? 'selected' : '', carnac.gameStatus === 'PLAYING' && (carnac.activePlayer.status === 'PLACE_STONE' || carnac.activePlayer.status === 'PASS_OR_PLACE') && isActivePlayer() ? 'notFrozen':'frozen'"
                   @click="selectStone('STONE_1')">
                   <tr>
                     <td class="cell"></td>
@@ -230,7 +230,7 @@
             </div>
             <div class="row">
               <div class="col d-flex justify-content-center">
-                <button class="pass" @click="mouseClickPass()" :disabled="(isActivePlayer() && carnac.activePlayer.status !== 'TIP_OR_PASS') || !isActivePlayer()">PASS</button>
+                <button class="pass" @click="mouseClickPass()" :disabled="(isActivePlayer() && (carnac.activePlayer.status !== 'TIP_OR_PASS' && carnac.activePlayer.status !== 'PASS_OR_PLACE')) || !isActivePlayer()">PASS</button>
               </div>
             </div>
             <div class="row">

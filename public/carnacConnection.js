@@ -1,5 +1,5 @@
-let url = "http://warnac.herokuapp.com"
-//let url = "http://localhost:3000"
+//let url = "http://warnac.herokuapp.com"
+let url = "http://localhost:3000"
 
 var socket = io();
 
@@ -63,8 +63,8 @@ const app = {
     },
     methods: {
         mouseOverCell(y, x) {
-            if (this.carnac.activePlayer.id === socket.id && this.carnac.activePlayer.status === "PLACE_STONE") {
-                this.carnac.placeStone(y, x);
+            if (this.carnac.activePlayer.id === socket.id && (this.carnac.activePlayer.status === "PLACE_STONE" || this.carnac.activePlayer.status === "PASS_OR_PLACE")) {
+                this.carnac.placeStone(y, x, true);
             }
 
         },
