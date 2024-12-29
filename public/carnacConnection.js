@@ -1,4 +1,4 @@
-let url = "https://carnac.up.railway.app/"
+let url = "https://carnac.up.railway.app"
 // let url = "http://localhost:3000"
 
 var socket = io();
